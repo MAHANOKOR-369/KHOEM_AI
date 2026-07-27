@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAHANOKOR-369 | KHOEM_AI Neural TV & Live Football Matrix</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link rel="stylesheet" href="/static/css/ty_ai369.css">
+</head>
+<body>
+    <div class="matrix-tv-container">
+        <header class="tv-header">
+            <div class="system-branding">
+                <h1>MAHANOKOR-369 <span class="highlight">TY_AI369 STADIUM</span></h1>
+                <p>Global Neural TV, Local Channels & Live Football Broadcasting Matrix</p>
+            </div>
+            <div class="system-metrics">
+                <span class="badge online" id="node-status">STATUS: ONLINE</span>
+                <span class="badge metric" id="cooling-metric">TEMP: 12.4°C</span>
+            </div>
+        </header>
+
+        <div class="tv-workspace">
+            <div class="screen-section">
+                <div class="screen-frame">
+                    <div class="scanline-overlay"></div>
+                    <video id="live-video-player" controls autoplay playsinline></video>
+                    
+                    <div class="screen-overlay-info">
+                        <div class="watermark">KHOEM_AI SECURE FEED</div>
+                        <h2 id="active-channel-title">CH-03: LIVE FOOTBALL STADIUM HD</h2>
+                        <p id="active-channel-desc">Broadcasting live international & local football match streams with ultra-low latency.</p>
+                    </div>
+                </div>
+
+                <div class="stream-controls">
+                    <button class="ctrl-btn active-btn" onclick="switchChannel('football')">⚽ LIVE FOOTBALL</button>
+                    <button class="ctrl-btn" onclick="switchChannel('local')">📺 ប៉ុស្តិ៍ក្នុងស្រុក (Local)</button>
+                    <button class="ctrl-btn" onclick="switchChannel('global')">🌍 ប៉ុស្តិ៍អន្តរជាតិ (Global)</button>
+                    <button class="ctrl-btn" onclick="togglePictureInPicture()">📌 PiP Mode</button>
+                    <button class="ctrl-btn danger" onclick="triggerEmergencyLock()">🔒 LOCK</button>
+                </div>
+            </div>
+
+            <div class="console-section">
+                <div class="panel-box">
+                    <h3>CHANNELS DIRECTORY (ALL NETWORKS)</h3>
+                    <ul class="channel-list" id="channel-directory">
+                        <li class="channel-item active" onclick="selectChannelItem(0, 'CH-03: LIVE FOOTBALL STADIUM HD', 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', 'Broadcasting live international & local football match streams.')">
+                            <span class="ch-badge football">LIVE</span> 01. Mahanokor Football Arena HD
+                        </li>
+                        <li class="channel-item" onclick="selectChannelItem(1, 'CH-01: CAMBODIA NATIONAL TV', 'https://cph-p2p-ms.akamaized.net/hls/live/2000341/test/master.m3u8', 'Local Cambodian network broadcasts, news, and entertainment.')">
+                            <span class="ch-badge local">LOCAL</span> 02. Cambodia National News TV
+                        </li>
+                        <li class="channel-item" onclick="selectChannelItem(2, 'CH-02: GLOBAL SPORTS NETWORK', 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', 'World sports updates, analysis, and tournament highlights.')">
+                            <span class="ch-badge sports">SPORTS</span> 03. Global Sports & Match Highlights
+                        </li>
+                        <li class="channel-item" onclick="selectChannelItem(3, 'CH-04: INTERNATIONAL NEWS HD', 'https://devimages-cdn.apple.com/samplecode/files/example_hls/playlist.m3u8', 'International breaking news, global markets, and diplomacy.')">
+                            <span class="ch-badge global">WORLD</span> 04. International News Feed
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="panel-box terminal-box">
+                    <h3>SYSTEM TELEMETRY LOG</h3>
+                    <div id="terminal-logs" class="logs-container">
+                        [SYSTEM]: ty_ai369 broadcasting module initialized.<br>
+                        [STREAM]: HLS video engine loaded successfully.<br>
+                        [READY]: Select a channel or football match to start watching.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/ty_ai369.js"></script>
+</body>
+</html>
