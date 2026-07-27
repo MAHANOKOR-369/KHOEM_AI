@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify
 import datetime
 
 app = Flask(__name__)
-
+    
 # ==========================================
 # ១. DASHBOARD & SYSTEM CONFIG MODULES
 # ==========================================
@@ -66,3 +66,8 @@ def api_matrix_status():
 if __name__ == '__main__':
     # រត់នៅលើ Port 5000 តែមួយរួមគ្នា គ្រប់គ្រងគ្រប់ Modules ទាំងអស់
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+if __name__ == '__main__':
+    # រត់នៅលើ Port 3690 ស្របតាម Termux របស់បង
+    app.run(host='0.0.0.0', port=3690, debug=True)
+    
