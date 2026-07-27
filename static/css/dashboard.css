@@ -1,0 +1,28 @@
+/* MAHANOKOR 369 GLOBAL INTERACTION STYLE */
+html, body {
+    margin: 0;
+    padding: 10px;
+    background-color: #060b16;
+    color: #8fa0dd;
+    font-family: 'Courier New', monospace;
+}
+
+/* ប៊ូតុង និងផ្ទាំងបញ្ជាទូទៅ */
+.cyber-btn {
+    border-radius: 2px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 0 4px rgba(0, 240, 255, 0.1);
+}
+
+.panel {
+    box-shadow: 0 0 10px rgba(12, 19, 34, 0.5);
+    border-radius: 4px;
+}
+
+/* ប្រព័ន្ធរបារ Terminal Log */
+.terminal-screen::-webkit-scrollbar {
+    width: 4px;
+}
+.terminal-screen::-webkit-scrollbar-thumb {
+    background: #141d30;
+}
