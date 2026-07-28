@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahanokor 369 | AI Digital Insurance</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+    <!-- ផ្ទាំងចាក់សោរ (Lock Screen) -->
+    <div id="lockscreen" class="screen-overlay">
+        <div class="login-box">
+            <h1 class="glow-text">MAHANOKOR 369</h1>
+            <p>ប្រព័ន្ធធានារ៉ាប់រងឌីជីថល AI កម្រិតខ្ពស់</p>
+            <input type="password" id="masterkey" placeholder="បញ្ចូលលេខកូដសម្ងាត់មេ..." />
+            <button onclick="customtrigger('unlock_system')">ដោះសោរប្រព័ន្ធ</button>
+            <p id="lockerrormsg" class="error-text" style="display: none;"></p>
+        </div>
+    </div>
+
+    <!-- ផ្ទាំងគ្រប់គ្រងមេ (Main Dashboard - លាក់សិនមុនពេល Login) -->
+    <div id="dashboard" class="dashboard-container">
+        
+        <!-- ផ្នែកខាងលើ (Header) -->
+        <header class="top-bar">
+            <div class="logo">Mahanokor AI Matrix</div>
+            <div id="clock" class="clock">CELESTIAL TIME: 00:00:00</div>
+            <div class="health-status">
+                <span>System Health: <span id="healthhealth">100%</span></span>
+                <div class="health-bar-bg">
+                    <div id="barhealth" class="health-bar-fill"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ផ្ទៃបង្ហាញទិន្នន័យ (Grid Layout) -->
+        <div class="main-grid">
+            
+            <!-- កាមេរ៉ា និងសេនស័រ (CCTV & Sensors) -->
+            <div class="panel cctv-panel">
+                <h3>🌐 ប្រព័ន្ធស្កេនគោលដៅ (CCTV/Sensors)</h3>
+                <div class="camera-feed">
+                    <div class="camera-info">
+                        <span id="cctvid">cam-0 [Offline]</span> | 
+                        <span id="cctvstatus">រង់ចាំការតភ្ជាប់...</span>
+                    </div>
+                    <div class="radar-scan"></div>
+                </div>
+            </div>
+
+            <!-- ប៊ូតុងបញ្ជា (Command Center) -->
+            <div class="panel control-panel">
+                <h3>⚡ មជ្ឈមណ្ឌលបញ្ជា (Admin Controls)</h3>
+                <button class="btn-scan" onclick="MainEngine.scanInsuranceNetwork()">ស្កេនបណ្តាញធានារ៉ាប់រង</button>
+                <button class="btn-claim" onclick="MahanokorInsuranceCore.validateCoverage('vehicle_001')">តេស្តសំណងស្វ័យប្រវត្តិ (Vehicle)</button>
+                <button class="btn-heal" onclick="MainEngine.triggerAutoHeal()">ព្យាបាលប្រព័ន្ធ (Auto-Heal)</button>
+                <button class="btn-supreme" onclick="AdminMatrix.initiateQuantumOverride()">🔥 ពិធីការ Admin 369</button>
+            </div>
+
+            <!-- ផ្ទាំង Terminal (AI Logs) -->
+            <div class="panel terminal-panel">
+                <h3>💻 Mahanokor Terminal Logs</h3>
+                <div id="logoutput" class="terminal-screen">
+                    <!-- ទិន្នន័យ Log នឹងលោតចេញទីនេះ -->
+                </div>
+                <button class="btn-clear" onclick="AdminMatrix.wipeTemporaryLogs()">សម្អាត Terminal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- តភ្ជាប់ឯកសារ «ខួរក្បាល» (JavaScript) ទាំងអស់នៅខាងក្រោមគេ -->
+    <script src="static/js/config.js"></script>
+    <script src="static/js/api.js"></script>
+    <script src="static/js/auth_engine.js"></script>
+    <script src="static/js/dashboard.js"></script>
+    <script src="static/js/main_engine.js"></script>
+    <script src="static/js/admin369.js"></script>
+    <script src="static/js/mahanokor_core.js"></script>
+    <script src="static/js/app.js"></script>
+    
+    <!-- Function បញ្ឆោតសម្រាប់ហៅ Login -->
+    <script>
+        function customtrigger(action) {
+            if(action === 'unlock_system') {
+                const key = document.getElementById("masterkey").value;
+                if(AuthEngine.verifyKey(key)){
+                    document.getElementById("dashboard").style.opacity = "1";
+                    document.getElementById("dashboard").style.pointerEvents = "auto";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
