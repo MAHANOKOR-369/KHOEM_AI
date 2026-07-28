@@ -1,24 +1,24 @@
-# KHOEM_AI CORE SYSTEM ENGINE - MAHANOKOR 369
-import random
+# ឈ្មោះឯកសារ: core/ai_engine.py
 
-class MahanokorCore:
+class KhoemAIEngine:
     def __init__(self):
-        self.system_name = "MAHANOKOR-369"
-        self.version = "KHOEM_AI_v3.6.9"
-        self.defense_layers = 45
-        self.matrix_locked = False
+        self.version = "1.0 - Commercial Edition"
         
-    def get_matrix_status(self):
-        """គណនាស្ថានភាពប្រព័ន្ធពិតប្រាកដ"""
-        return {
-            "status": "online" if not self.matrix_locked else "locked",
-            "cooling_temp": round(random.uniform(11.8, 13.5), 1),
-            "defense_status": f"{self.defense_layers} layers active",
-            "botany_health": 100,
-            "healthcare_health": 100
+    def generate_business_prompt(self, task_type):
+        """
+        មុខងារនេះអាចលក់ជាសេវាកម្ម: បង្កើត Prompt ស្វ័យប្រវត្តិសម្រាប់អាជីវកម្មខ្នាតតូច
+        """
+        prompts = {
+            "marketing": "សរសេរខ្លឹមសារផ្សព្វផ្សាយលក់ផលិតផលទាក់ទាញអតិថិជន...",
+            "customer_service": "របៀបឆ្លើយតបអតិថិជនដែលខឹងឱ្យត្រជាក់ចិត្តវិញ...",
+            "data_analysis": "វិភាគទិន្នន័យលក់ប្រចាំខែ និងស្វែងរកចំណុចខ្វះខាត..."
         }
-        
-    def trigger_security_lock(self):
-        """ពិធីសារបិទម៉ាទ្រីសសុវត្ថិភាព"""
-        self.matrix_locked = True
-        return self.matrix_locked
+        return prompts.get(task_type, "សូមជ្រើសរើសប្រភេទការងារឱ្យបានត្រឹមត្រូវ។")
+
+    def auto_reply_bot_logic(self, incoming_message):
+        """
+        មុខងារនេះអាចយកទៅรับធ្វើ Telegram/Facebook Bot ឱ្យគេយកលុយ
+        """
+        if "តម្លៃ" in incoming_message:
+            return "សូមអរគុណ! សម្រាប់ព័ត៌មានតម្លៃ សូមឆែកមើលកាតាឡុករបស់យើងខ្ញុំ។"
+        return "សូមរង់ចាំបន្តិច ភ្នាក់ងារយើងខ្ញុំនឹងឆ្លើយតបក្នុងពេលឆាប់ៗ។"
