@@ -20,8 +20,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/mahanokor.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-# កែសម្រួលឱ្យត្រូវជាមួយសេវាកម្មទិន្នន័យ Termux
-socketio = SocketIO(app, cors_allowed_origins="*")
+
+# 💡 កែសម្រួល៖ បន្ថែម async_mode='threading' ដើម្បីដោះស្រាយ Error គាំងនៅលើ Termux/Android
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 # ==========================================
 # ២. DATABASE MODELS
@@ -51,8 +52,8 @@ with app.app_context():
 @app.route('/')
 @app.route('/dashboard')
 def dashboard():
-    # ចូលទៅកាន់ផ្ទាំងរួមបញ្ចូលគ្នាដែលមានទាំង ផែនទី និង ទូរទស្សន៍ Live TV
-    return render_template('ty_ai369.html')
+    # 💡 កែសម្រួល៖ ប្តូរឱ្យទៅបើកទំព័រ dashboard.html ដែលបងទើបតែកែសម្រួលនៅលើ GitHub
+    return render_template('dashboard.html')
 
 @app.route('/config')
 def config_page():
@@ -60,6 +61,7 @@ def config_page():
 
 @app.route('/tv')
 def ty_ai369_matrix():
+    # រក្សាទុកទំព័រ ty_ai369.html សម្រាប់មុខងារចាក់ទូរទស្សន៍ Matrix TV ដាច់ដោយឡែក
     return render_template('ty_ai369.html')
 
 # API សម្រាប់ទាញទិន្នន័យ Dashboard មកបង្ហាញលើអេក្រង់ Real-time
@@ -121,5 +123,5 @@ def handle_command(data):
 # ៥. APPLICATION ENTRY POINT
 # ==========================================
 if __name__ == '__main__':
-    # រត់នៅលើ Port 5000 (បងអាចប្តូរទៅ 3690 ត្រង់ port= បានតាមតម្រូវការ)
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    # 💡 កែសម្រួល៖ ប្តូរទៅ Port 3690 ឱ្យត្រូវទៅនឹងការកំណត់ប្រព័ន្ធសន្តិសុខ Termux របស់បង
+    socketio.run(app, host='0.0.0.0', port=3690, debug=True)
