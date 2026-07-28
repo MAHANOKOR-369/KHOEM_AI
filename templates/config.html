@@ -79,6 +79,8 @@
             cursor: pointer;
             text-align: center;
             font-size: 0.85rem;
+            font-weight: bold;
+            text-decoration: none;
         }
         .btn-save {
             background: #00b386 !important;
@@ -97,13 +99,13 @@
         <div class="config-title">🌐 AI ENGINE & PLATFORM SETTINGS</div>
         <div class="form-group">
             <label>ឈ្មោះគម្រោងប្រព័ន្ធ (SYSTEM NAME)</label>
-            <input type="text" value="MAHANOKOR-369">
+            <input type="text" id="sys-name" value="MAHANOKOR-369">
         </div>
         <div class="form-group">
             <label>ម៉ូឌែលខួរក្បាល AI (CORE ENGINE)</label>
-            <select>
-                <option>KHOEM_AI_v3.6.9 (Active)</option>
-                <option>MAHANOKOR_KERNEL_v1.0</option>
+            <select id="core-engine">
+                <option value="KHOEM_AI_v3.6.9">KHOEM_AI_v3.6.9 (Active)</option>
+                <option value="MAHANOKOR_KERNEL_v1.0">MAHANOKOR_KERNEL_v1.0</option>
             </select>
         </div>
     </div>
@@ -112,9 +114,9 @@
         <div class="config-title">🛡️ SECURITY LAYER CONTROL</div>
         <div class="form-group">
             <label>កម្រិតការពារ (MATRIX LAYER PROTECTION)</label>
-            <select>
-                <option>45 LAYERS AUTO-DEFENSE (MAX)</option>
-                <option>30 LAYERS OPTIMAL</option>
+            <select id="matrix-layers">
+                <option value="45_LAYERS">45 LAYERS AUTO-DEFENSE (MAX)</option>
+                <option value="30_LAYERS">30 LAYERS OPTIMAL</option>
             </select>
         </div>
         <div class="form-group">
@@ -124,9 +126,28 @@
     </div>
 
     <div class="btn-group">
-        <button class="cyber-btn" onclick="location.href='/templates/dashboard.html'">◀ ត្រឡប់ក្រោយ</button>
-        <button class="cyber-btn btn-save">💾 រក្សាទុកការកំណត់</button>
+        <button class="cyber-btn" onclick="location.href='/'">◀ ត្រឡប់ក្រោយ</button>
+        <button class="cyber-btn btn-save" onclick="saveConfiguration()">💾 រក្សាទុកការកំណត់</button>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        function saveConfiguration() {
+            var sysName = document.getElementById('sys-name').value;
+            var coreEngine = document.getElementById('core-engine').value;
+            var layers = document.getElementById('matrix-layers').value;
+
+            // ផ្ញើពាក្យបញ្ជាទៅកាន់ main.py តាមរយៈ SocketIO ដើម្បីកត់ត្រាទុកក្នុង Database
+            socket.emit('execute_command', {
+                action: `UPDATE_CONFIG: ${sysName} | ${coreEngine} | ${layers}`
+            });
+
+            alert("កែសម្រួលការកំណត់ប្រព័ន្ធ MAHANOKOR-369 ជោគជ័យ!");
+            // ត្រឡប់ទៅកាន់ទំព័រដើមវិញដោយស្វ័យប្រវត្តិ
+            location.href = '/';
+        }
+    </script>
 </body>
 </html>
