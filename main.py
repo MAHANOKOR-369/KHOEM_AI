@@ -5,19 +5,30 @@ from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
 
-# ហៅ Class ពី core/ai_engine.py មកប្រើប្រាស់
-from core.ai_engine import MahanokorCore
-
-os.makedirs('data', exist_ok=True)
+# បង្កើត Mock Class ការពារកុំឱ្យគាំង ប្រសិនបើមិនទាន់មានឯកសារ core មេ
+class MahanokorCore:
+    def __init__(self):
+        self.system_name = "MAHANOKOR-369"
+        self.defense_layers = 45
+        self.matrix_locked = False
+    def get_matrix_status(self):
+        import random
+        return {
+            "status": "online" if not self.matrix_locked else "emergency_locked",
+            "cooling_temp": round(random.uniform(11.8, 13.5), 1)
+        }
+    def trigger_security_lock(self):
+        self.matrix_locked = True
+        self.defense_layers = 0
+        return True
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
-app.config['SECRET_KEY'] = 'mahanokor_369_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/mahanokor.db'
+app.config['SECRET_KEY'] = 'khoem_ai_369_sovereign'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///core/database/system_ids.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
-
 mahanokor_engine = MahanokorCore()
 telemetry_thread_started = False
 
@@ -30,7 +41,11 @@ class SystemLog(db.Model):
 with app.app_context():
     db.create_all()
 
+# --- WEB PAGES ---
 @app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
@@ -41,19 +56,17 @@ def config_page():
 
 @app.route('/tv')
 def matrix_tv_view():
-    return render_template('ty_ai369.html')
+    return render_template('dashboard.html') # អាចដូរទៅលីងទូរទស្សន៍ផ្សេងបាន
 
+# --- APIS ---
 @app.route('/api/v1/matrix/security/lock', methods=['POST'])
 def api_matrix_lock():
     try:
         mahanokor_engine.trigger_security_lock()
-        log_entry = SystemLog(action="EMERGENCY_LOCK", status='ACTIVATED')
+        log_entry = SystemLog(action="EMERGENCY_LOCK", status="ACTIVATED")
         db.session.add(log_entry)
         db.session.commit()
-        return jsonify({
-            "success": True,
-            "message": f"🔒 SECURITY NOTICE: {mahanokor_engine.system_name} Core layers have been EMERGENCY LOCKED!"
-        })
+        return jsonify({"success": True, "message": f"🔒 SECURITY NOTICE: {mahanokor_engine.system_name} Core layers have been EMERGENCY LOCKED!"})
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 
@@ -70,15 +83,15 @@ def api_matrix_status():
         }
     })
 
+# --- SOCKET IO REAL-TIME ---
 def run_telemetry_loop():
     while True:
         socketio.sleep(2)
-        # បោះតម្លៃ dynamic cooling ចេញពី engine
         status_now = mahanokor_engine.get_matrix_status()
         socketio.emit('hardware_telemetry', {
-            'cpu': 28, 
+            'cpu': 28,
             'ram': 46,
-            'temp': status_now["cooling_temp"]
+            'temp': status_now['cooling_temp']
         })
 
 @socketio.on('connect')
@@ -87,28 +100,7 @@ def on_client_connect():
     if not telemetry_thread_started:
         socketio.start_background_task(run_telemetry_loop)
         telemetry_thread_started = True
-        
-    emit('system_alert', {
-        'message': f'⚙️ [SYSTEM AUTH]: ពិនិត្យឃើញប្រព័ន្ធ {mahanokor_engine.system_name} ដំណើរការជោគជ័យ!', 
-        'color': '#00ff66'
-    })
-
-@socketio.on('execute_command')
-def on_execute_command(data):
-    cmd_action = data.get('action', 'UNKNOWN_ACTION')
-    try:
-        log_entry = SystemLog(action=cmd_action, status='SUCCESS')
-        db.session.add(log_entry)
-        db.session.commit()
-    except Exception as e:
-        print(f"Database error: {e}")
-        
-    emit('command_response', {
-        'action': cmd_action, 
-        'message': f'ការអនុវត្ត {cmd_action} បានសម្រេចជោគជ័យ', 
-        'timestamp': datetime.now().strftime("%H:%M:%S")
-    }, broadcast=True)
+    emit('system_alert', {'message': f'🔌 @ [SYSTEM AUTH]: និរន្តរភាពប្រព័ន្ធ {mahanokor_engine.system_name} ដំណើរការហើយ!', 'color': '#00ffc8'})
 
 if __name__ == '__main__':
-    # 💡 កែតម្រូវមកប្រើ Port 5000 ឱ្យត្រូវនឹងទម្លាប់ប្រើប្រាស់ និងលីងពិតប្រាកដរបស់បង
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
