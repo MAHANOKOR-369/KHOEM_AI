@@ -3,30 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHANOKOR 369 CONTROL SYSTEM</title>
+    <title>MAHANOKOR 369 CONTROL MATRIX</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        :root { --bg: #020b14; --border: #004f77; --cyan: #00ffc8; --blue: #00a2ff; --green: #00ff66; --red: #ff0055; }
-        body { background: var(--bg); color: var(--blue); font-family: monospace; padding: 10px; margin: 0; }
-        .header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 15px; }
-        .panel { border: 1px solid var(--border); padding: 10px; margin-bottom: 15px; background: rgba(0,15,30,0.5); }
-        .grid-btn { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        @media(min-width: 768px) { .grid-btn { grid-template-columns: repeat(4, 1fr); } }
-        .btn { background: transparent; border: 1px solid var(--border); color: var(--blue); padding: 12px; cursor: pointer; font-family: inherit; }
-        .btn:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
-        .btn-lock { border-color: var(--red); color: var(--red); }
-        #map { width: 100%; height: 260px; border: 1px solid var(--border); }
+        :root {
+            --bg: #020b14;
+            --border: #004f77;
+            --cyan: #00ffc8;
+            --blue: #00a2ff;
+            --green: #00ff66;
+            --red: #ff0055;
+            --text-gray: #8ab4f8;
+        }
+        body {
+            background: var(--bg);
+            color: var(--blue);
+            font-family: monospace;
+            padding: 10px;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .cctv-title { color: #fff; font-weight: bold; font-size: 1.1rem; }
+        .location-tag { color: var(--green); display: flex; align-items: center; gap: 5px; }
+        .dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--green); }
+        
+        .panel {
+            border: 1px solid var(--border);
+            padding: 12px;
+            margin-bottom: 15px;
+            background: rgba(0, 15, 30, 0.6);
+            box-shadow: inset 0 0 15px rgba(0, 79, 119, 0.2);
+        }
+        .grid-btn {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn {
+            background: rgba(0, 20, 40, 0.4);
+            border: 1px solid var(--border);
+            color: var(--text-gray);
+            padding: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 255, 200, 0.3);
+        }
+        .btn-lock {
+            border-color: rgba(255, 0, 85, 0.5);
+            color: var(--red);
+        }
+        .btn-lock:hover {
+            border-color: var(--red);
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.4);
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin: 8px 0;
+            border-bottom: 1px dashed rgba(0, 79, 119, 0.3);
+            padding-bottom: 5px;
+        }
+
+        #map {
+            width: 100%;
+            height: 300px;
+            border: 1px solid var(--border);
+            background: #01070e;
+        }
+        
+        /* កែប្រែពណ៌របស់ Leaflet Map ឱ្យទៅជា Dark Mode Cyberpunk */
+        .leaflet-layer, .leaflet-control-zoom {
+            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
     </style>
 </head>
 <body>
+
     <div class="header">
-        <div style="color: #fff; font-weight: bold;">MAHANOKOR 369 CONTROL SYSTEM</div>
-        <div style="color: var(--green)">STATUS: ONLINE</div>
+        <div class="cctv-title">MAHANOKOR 369 CCTV ផ្សាយផ្ទាល់</div>
+        <div class="location-tag"><span class="dot"></span> phnom penh (hq)</div>
     </div>
 
     <div class="panel">
-        <div style="color: var(--cyan); margin-bottom: 10px; font-size: 0.85rem;">&gt; Sub-Zero Cooling System: ACTIVE (<span id="temp-val">12.2°C</span>)</div>
-        <div style="color: #fff; font-size: 0.8rem; margin-bottom: 10px;">MAIN CONTROLS (ZERO ERROR MATRIX)</div>
+        <div class="telemetry-row">
+            <span style="color: var(--cyan);">&gt; Cooling Control:</span>
+            <span id="temp-val" style="color: #fff; font-weight: bold;">12.2°C</span>
+        </div>
+        <div class="telemetry-row">
+            <span style="color: var(--cyan);">&gt; Defense Matrix:</span>
+            <span style="color: var(--blue);">[45x] UNITS STANDBY</span>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div style="color: #fff; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 8px;">MAIN CONTROLS (ZERO ERROR MATRIX)</div>
         <div class="grid-btn">
             <button class="btn" onclick="location.href='/config'">SYSTEM CONFIG</button>
             <button class="btn">VIEW LOGS</button>
@@ -36,27 +123,55 @@
     </div>
 
     <div class="panel">
-        <div style="color: #fff; font-size: 0.8rem; margin-bottom: 8px;">🗺️ សក្ដានុពលទីតាំងភូមិសាស្ត្រ KHOEM_AI HQ</div>
+        <div style="color: #fff; font-size: 0.85rem; margin-bottom: 8px;">🗺️ សក្ដានុពលទីតាំងភូមិសាស្ត្រ KHOEM_AI HQ</div>
         <div id="map"></div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    
     <script>
+        // ការភ្ជាប់ទំនាក់ទំនង Real-time ជាមួយ Termux Server
         var socket = io.connect(window.location.origin);
+        
+        // ទទួលទិន្នន័យបច្ចុប្បន្នភាពកម្តៅពី Python លោតឌីណាមិក
         socket.on('hardware_telemetry', function(data) {
             document.getElementById('temp-val').innerText = data.temp + '°C';
         });
-        socket.on('system_alert', function(data) { console.log(data.message); });
 
-        var map = L.map('map', {zoomControl: false}).setView([11.5564, 104.9282], 14);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png').addTo(map);
-        L.marker([11.5564, 104.9282]).addTo(map);
-        L.polyline([[11.5590, 104.9200], [11.5564, 104.9282]], {color: '#00ffc8', weight: 3, dashArray: '5, 10'}).addTo(map);
+        // បង្កើតផែនទី និងកំណត់ទីតាំងកណ្តាលទៅរាជធានីភ្នំពេញ
+        var map = L.map('map', { zoomControl: false }).setView([11.5564, 104.9282], 14);
+        
+        // ប្រើប្រាស់ Tile ផែនទី Dark mode ស្អាត
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
 
+        // បន្ថែមចំណុច (Marker) ទីតាំងនៅលើផែនទី
+        var hqMarker = L.marker([11.5564, 104.9282]).addTo(map)
+            .bindPopup('<b>KHOEM_AI HQ</b><br>Core Matrix Active.')
+            .openPopup();
+
+        // បង្កើតខ្សែបន្ទាត់ដាច់ៗ (Dash Line) ពណ៌ Cyan រត់កាត់ផែនទីដូចក្នុងវីដេអូ
+        var pathCoordinates = [
+            [11.5590, 104.9200],
+            [11.5575, 104.9245],
+            [11.5564, 104.9282]
+        ];
+        var polyline = L.polyline(pathCoordinates, {
+            color: '#00ffc8',
+            weight: 4,
+            opacity: 0.8,
+            dashArray: '6, 10'
+        }).addTo(map);
+
+        // មុខងារបញ្ជាប៊ូតុង Lock System ទៅកាន់ API ខាងក្រោយ
         function lockMatrix() {
             fetch('/api/v1/matrix/security/lock', { method: 'POST' })
-            .then(res => res.json()).then(data => alert(data.message));
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+            }).catch(err => console.error("Error locking matrix:", err));
         }
     </script>
 </body>
