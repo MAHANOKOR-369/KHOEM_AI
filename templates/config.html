@@ -3,150 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHANOKOR 369 | SYSTEM CONFIG</title>
-    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <title>MAHANOKOR 369 CONTROL SYSTEM</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        :root {
-            --bg-color: #060b16;
-            --panel-bg: #0c1322;
-            --cyan: #00f0ff;
-            --magenta: #ff0055;
-            --green: #00ff66;
-            --text-color: #8fa0dd;
-        }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Courier New', monospace;
-            padding: 15px;
-            margin: 0;
-        }
-        .config-header {
-            border: 1px solid var(--magenta);
-            background: var(--panel-bg);
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.2);
-            margin-bottom: 15px;
-        }
-        .config-card {
-            border: 1px solid #1a263f;
-            background: var(--panel-bg);
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .config-title {
-            color: #fff;
-            font-size: 0.9rem;
-            border-left: 3px solid var(--magenta);
-            padding-left: 8px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
-        .form-group {
-            margin-bottom: 12px;
-        }
-        label {
-            display: block;
-            font-size: 0.8rem;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-        input, select {
-            width: 100%;
-            background: #040811;
-            border: 1px solid #233554;
-            color: var(--cyan);
-            padding: 10px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        input:focus, select:focus {
-            border-color: var(--cyan);
-            outline: none;
-        }
-        .btn-group {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .cyber-btn {
-            background: #111a2e;
-            border: 1px solid #233554;
-            color: #fff;
-            padding: 12px;
-            cursor: pointer;
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .btn-save {
-            background: #00b386 !important;
-            border-color: var(--green) !important;
-        }
+        :root { --bg: #020b14; --border: #004f77; --cyan: #00ffc8; --blue: #00a2ff; --green: #00ff66; --red: #ff0055; }
+        body { background: var(--bg); color: var(--blue); font-family: monospace; padding: 10px; margin: 0; }
+        .header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 15px; }
+        .panel { border: 1px solid var(--border); padding: 10px; margin-bottom: 15px; background: rgba(0,15,30,0.5); }
+        .grid-btn { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media(min-width: 768px) { .grid-btn { grid-template-columns: repeat(4, 1fr); } }
+        .btn { background: transparent; border: 1px solid var(--border); color: var(--blue); padding: 12px; cursor: pointer; font-family: inherit; }
+        .btn:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+        .btn-lock { border-color: var(--red); color: var(--red); }
+        #map { width: 100%; height: 260px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
-
-    <div class="config-header">
-        <h2 style="color: #fff; margin: 0 0 5px 0;">🛠️ SYSTEM CONFIGURATION</h2>
-        <div style="font-size: 0.8rem; color: var(--magenta);">MAHANOKOR INTERACTION INTERFACE</div>
+    <div class="header">
+        <div style="color: #fff; font-weight: bold;">MAHANOKOR 369 CONTROL SYSTEM</div>
+        <div style="color: var(--green)">STATUS: ONLINE</div>
     </div>
 
-    <div class="config-card">
-        <div class="config-title">🌐 AI ENGINE & PLATFORM SETTINGS</div>
-        <div class="form-group">
-            <label>ឈ្មោះគម្រោងប្រព័ន្ធ (SYSTEM NAME)</label>
-            <input type="text" id="sys-name" value="MAHANOKOR-369">
-        </div>
-        <div class="form-group">
-            <label>ម៉ូឌែលខួរក្បាល AI (CORE ENGINE)</label>
-            <select id="core-engine">
-                <option value="KHOEM_AI_v3.6.9">KHOEM_AI_v3.6.9 (Active)</option>
-                <option value="MAHANOKOR_KERNEL_v1.0">MAHANOKOR_KERNEL_v1.0</option>
-            </select>
+    <div class="panel">
+        <div style="color: var(--cyan); margin-bottom: 10px; font-size: 0.85rem;">&gt; Sub-Zero Cooling System: ACTIVE (<span id="temp-val">12.2°C</span>)</div>
+        <div style="color: #fff; font-size: 0.8rem; margin-bottom: 10px;">MAIN CONTROLS (ZERO ERROR MATRIX)</div>
+        <div class="grid-btn">
+            <button class="btn" onclick="location.href='/config'">SYSTEM CONFIG</button>
+            <button class="btn">VIEW LOGS</button>
+            <button class="btn">STATUS CHECK</button>
+            <button class="btn btn-lock" onclick="lockMatrix()">LOCK MATRIX</button>
         </div>
     </div>
 
-    <div class="config-card">
-        <div class="config-title">🛡️ SECURITY LAYER CONTROL</div>
-        <div class="form-group">
-            <label>កម្រិតការពារ (MATRIX LAYER PROTECTION)</label>
-            <select id="matrix-layers">
-                <option value="45_LAYERS">45 LAYERS AUTO-DEFENSE (MAX)</option>
-                <option value="30_LAYERS">30 LAYERS OPTIMAL</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>ស្ថានភាពតំណភ្ជាប់ (FIREWALL PROTOCOL)</label>
-            <input type="text" value="SECURE_SSL_EMPIRE_PROTOCOL" readonly style="color: var(--green); opacity: 0.8;">
-        </div>
+    <div class="panel">
+        <div style="color: #fff; font-size: 0.8rem; margin-bottom: 8px;">🗺️ សក្ដានុពលទីតាំងភូមិសាស្ត្រ KHOEM_AI HQ</div>
+        <div id="map"></div>
     </div>
 
-    <div class="btn-group">
-        <button class="cyber-btn" onclick="location.href='/'">◀ ត្រឡប់ក្រោយ</button>
-        <button class="cyber-btn btn-save" onclick="saveConfiguration()">💾 រក្សាទុកការកំណត់</button>
-    </div>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
     <script>
-        var socket = io();
+        var socket = io.connect(window.location.origin);
+        socket.on('hardware_telemetry', function(data) {
+            document.getElementById('temp-val').innerText = data.temp + '°C';
+        });
+        socket.on('system_alert', function(data) { console.log(data.message); });
 
-        function saveConfiguration() {
-            var sysName = document.getElementById('sys-name').value;
-            var coreEngine = document.getElementById('core-engine').value;
-            var layers = document.getElementById('matrix-layers').value;
+        var map = L.map('map', {zoomControl: false}).setView([11.5564, 104.9282], 14);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png').addTo(map);
+        L.marker([11.5564, 104.9282]).addTo(map);
+        L.polyline([[11.5590, 104.9200], [11.5564, 104.9282]], {color: '#00ffc8', weight: 3, dashArray: '5, 10'}).addTo(map);
 
-            // ផ្ញើពាក្យបញ្ជាទៅកាន់ main.py តាមរយៈ SocketIO ដើម្បីកត់ត្រាទុកក្នុង Database
-            socket.emit('execute_command', {
-                action: `UPDATE_CONFIG: ${sysName} | ${coreEngine} | ${layers}`
-            });
-
-            alert("កែសម្រួលការកំណត់ប្រព័ន្ធ MAHANOKOR-369 ជោគជ័យ!");
-            // ត្រឡប់ទៅកាន់ទំព័រដើមវិញដោយស្វ័យប្រវត្តិ
-            location.href = '/';
+        function lockMatrix() {
+            fetch('/api/v1/matrix/security/lock', { method: 'POST' })
+            .then(res => res.json()).then(data => alert(data.message));
         }
     </script>
 </body>
