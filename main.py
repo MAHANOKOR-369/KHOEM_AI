@@ -1,20 +1,26 @@
-# ឈ្មោះឯកសារ: SERVICES_AND_PRICING.md
+# ឈ្មោះឯកសារ: main.py
 
-# KHOEM_AI - Professional Tech Services
+from flask import Flask, render_template
 
-ខ្ញុំទទួលធ្វើការងារបច្ចេកវិទ្យា និងបង្រៀនជំនាញ IT ជាមួយនឹងបទពិសោធន៍ និងវិញ្ញាបនបត្រទទួលស្គាល់ត្រឹមត្រូវ។ 
-ចំណូលទាំងអស់ពីសេវាកម្មនេះ គឺសម្រាប់ផ្គត់ផ្គង់ជីវភាពគ្រួសារ។ ធានាគុណភាព និងការទទួលខុសត្រូវខ្ពស់។
+app = Flask(__name__)
 
-## ផ្នែកបង្រៀន (Tech Academy)
-* **Python for Beginners & Automation:** $99/វគ្គ (រៀនតាម Online/ផ្ទាល់)
-* **Web Development (Angular & C#):** $150/វគ្គ
-* **Prompt Engineering for Business:** $50/វគ្គ
+# ១. ទំព័រដើម (ផ្ទាំងបង្ហាញសេវាកម្ម / Dashboard)
+@app.route('/')
+def home():
+    # វានឹងទៅទាញឯកសារ dashboard.html ពីក្នុងថត templates មកបង្ហាញ
+    return render_template('dashboard.html')
 
-## ផ្នែកសេវាកម្ម (Freelance Services)
-* **រៀបចំ Dashboard & គ្រប់គ្រងទិន្នន័យ:** ចាប់ពី $200+
-* **បង្កើត Telegram/Facebook Chatbots:** ចាប់ពី $150+
-* **ជួសជុល និងកែកូដប្រព័ន្ធចាស់ៗ:** គិតថ្លៃតាមម៉ោង ($15/ម៉ោង)
+# ២. ទំព័រប្រវត្តិរូប និងវិញ្ញាបនបត្រ (Portfolio & Skills)
+@app.route('/portfolio')
+def portfolio():
+    # វានឹងទៅទាញឯកសារ portfolio.html ពីក្នុងថត templates មកបង្ហាញ
+    return render_template('portfolio.html')
 
-**ទំនាក់ទំនងការងារ:**
-* 📱 Telegram: [ដាក់លេខ ឬ Username បង]
-* 📧 Email: [ដាក់ Email បង]
+# (ចំណាំ: សម្រាប់ឯកសារចាស់ៗដែលបងបាន Rename ដូចជា ty_ai369.html គឺយើងមិនបាច់សរសេរ Route ឱ្យវាទេ ទុកវាជា Backup ក្នុងថតបានហើយ)
+
+if __name__ == '__main__':
+    # ដំណើរការ Server នៅលើ Port 5000
+    print("🚀 KHOEM_AI System is starting...")
+    print("🌐 សូមចូលទៅកាន់: http://127.0.0.1:5000 ដើម្បីមើលលទ្ធផល")
+    app.run(debug=True, host='0.0.0.0', port=5000)
+
