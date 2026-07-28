@@ -3,61 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHANOKOR 369 CONTROL SYSTEM</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <title>MAHANOKOR 369 CONFIG MATRIX</title>
     <style>
-        :root { --bg: #020b14; --border: #004f77; --cyan: #00ffc8; --blue: #00a2ff; --green: #00ff66; --red: #ff0055; }
+        :root { --bg: #020b14; --border: #004f77; --cyan: #00ffc8; --blue: #00a2ff; --red: #ff0055; }
         body { background: var(--bg); color: var(--blue); font-family: monospace; padding: 10px; margin: 0; }
-        .header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 15px; }
-        .panel { border: 1px solid var(--border); padding: 10px; margin-bottom: 15px; background: rgba(0,15,30,0.5); }
-        .grid-btn { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        @media(min-width: 768px) { .grid-btn { grid-template-columns: repeat(4, 1fr); } }
-        .btn { background: transparent; border: 1px solid var(--border); color: var(--blue); padding: 12px; cursor: pointer; font-family: inherit; }
-        .btn:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
-        .btn-lock { border-color: var(--red); color: var(--red); }
-        #map { width: 100%; height: 260px; border: 1px solid var(--border); }
+        .header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 20px; }
+        .btn-top { background: transparent; border: 1px solid var(--border); color: var(--cyan); padding: 5px 10px; cursor: pointer; text-decoration: none; font-size: 0.8rem; }
+        .btn-red { border-color: var(--red); color: var(--red); }
+        .panel { border: 1px solid var(--border); padding: 15px; background: rgba(0,15,30,0.5); }
+        .actions { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-action { background: transparent; border: 1px solid var(--border); color: var(--blue); padding: 10px 15px; cursor: pointer; font-family: inherit; }
+        .btn-action:hover { border-color: var(--cyan); color: var(--cyan); }
+        .active-firewall { background: var(--cyan); color: var(--bg); border-color: var(--cyan); }
     </style>
 </head>
 <body>
     <div class="header">
-        <div style="color: #fff; font-weight: bold;">MAHANOKOR 369 CONTROL SYSTEM</div>
-        <div style="color: var(--green)">STATUS: ONLINE</div>
+        <a href="/dashboard" class="btn-top">&lt; BACK TO DASHBOARD</a>
+        <div style="color: #fff; font-size: 0.9rem;">MAHANOKOR 369 CONFIG MATRIX</div>
+        <button class="btn-top btn-red">SECURE MODE</button>
     </div>
 
     <div class="panel">
-        <div style="color: var(--cyan); margin-bottom: 10px; font-size: 0.85rem;">&gt; Sub-Zero Cooling System: ACTIVE (<span id="temp-val">12.2°C</span>)</div>
-        <div style="color: #fff; font-size: 0.8rem; margin-bottom: 10px;">MAIN CONTROLS (ZERO ERROR MATRIX)</div>
-        <div class="grid-btn">
-            <button class="btn" onclick="location.href='/config'">SYSTEM CONFIG</button>
-            <button class="btn">VIEW LOGS</button>
-            <button class="btn">STATUS CHECK</button>
-            <button class="btn btn-lock" onclick="lockMatrix()">LOCK MATRIX</button>
+        <div style="color: #fff; font-size: 0.9rem; margin-bottom: 10px;">[ CORE CONFIGURATION PANEL ]</div>
+        <div style="font-size: 0.85rem; line-height: 1.6;">
+            <span style="color: var(--cyan);">&gt; Encryption Status:</span> QUANTUM 256-BIT ENABLED<br>
+            <span style="color: var(--cyan);">&gt; Access Node:</span> Terminal Boot @MAHANOKOR-369
+        </div>
+
+        <div style="color: #00ff66; font-size: 0.85rem; margin-top: 25px;">&gt;&gt; SELECT MAINFRAME OPERATIONS:</div>
+        <div class="actions">
+            <button class="btn-action active-firewall">OVERRIDE FIREWALL</button>
+            <button class="btn-action">CLEAR SYSTEM LOGS</button>
+            <button class="btn-action" style="border-color: var(--red); color: var(--red);">INITIALIZE CORE REBOOT</button>
         </div>
     </div>
-
-    <div class="panel">
-        <div style="color: #fff; font-size: 0.8rem; margin-bottom: 8px;">🗺️ សក្ដានុពលទីតាំងភូមិសាស្ត្រ KHOEM_AI HQ</div>
-        <div id="map"></div>
-    </div>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
-    <script>
-        var socket = io.connect(window.location.origin);
-        socket.on('hardware_telemetry', function(data) {
-            document.getElementById('temp-val').innerText = data.temp + '°C';
-        });
-        socket.on('system_alert', function(data) { console.log(data.message); });
-
-        var map = L.map('map', {zoomControl: false}).setView([11.5564, 104.9282], 14);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png').addTo(map);
-        L.marker([11.5564, 104.9282]).addTo(map);
-        L.polyline([[11.5590, 104.9200], [11.5564, 104.9282]], {color: '#00ffc8', weight: 3, dashArray: '5, 10'}).addTo(map);
-
-        function lockMatrix() {
-            fetch('/api/v1/matrix/security/lock', { method: 'POST' })
-            .then(res => res.json()).then(data => alert(data.message));
-        }
-    </script>
 </body>
 </html>
