@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KHOEM SOKSIVUTHA | MAHANOKOR 369</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        /* ប្រព័ន្ធពណ៌ និងការដេគ័រស្ទីល Cyberpunk Core */
         :root {
             --bg-color: #060b16;
             --panel-bg: #0c1322;
@@ -64,6 +62,7 @@
             font-size: 0.85rem;
             transition: all 0.3s;
             font-family: inherit;
+            font-weight: bold;
         }
         .cyber-btn:hover {
             border-color: var(--cyan);
@@ -73,8 +72,6 @@
             background: #7a1226 !important;
             border-color: var(--magenta) !important;
         }
-        
-        /* ផ្នែកកែសម្រួល៖ បញ្ចូល Video Frame ពិតប្រាកដសម្រាប់ Streaming */
         .cctv-screen {
             background: #000;
             border: 1px solid #1a263f;
@@ -105,12 +102,6 @@
             height: 120px;
             overflow-y: auto;
         }
-        .progress-bar {
-            background: #111a2e; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 5px;
-        }
-        .progress-fill {
-            height: 100%; background: var(--green); width: 100%;
-        }
     </style>
 </head>
 <body>
@@ -118,7 +109,7 @@
     <div class="cyber-header">
         <h2 style="color: #fff; margin: 0 0 5px 0;">🔱 khoem soksivutha | mahanokor 369</h2>
         <div style="font-size: 0.8rem; color: var(--cyan);">
-            CELESTIAL TIME: <span id="time-display">28/7/2026, 12:00:44 PM</span> | stable online (100%)
+            CELESTIAL TIME: <span id="time-display">--/--/----, --:--:-- --</span> | stable online (100%)
         </div>
         <div style="font-size: 0.7rem; color: #526699; margin-top: 5px;">MICHAEL-EMPIRE PROTECTION PROTOCOL</div>
     </div>
@@ -144,9 +135,7 @@
         <div class="panel-title">📹 ទិន្នន័យសន្តិសុខ CCTV & LIVE ENGINE</div>
         <div class="cctv-screen">
             <div style="position: absolute; top: 5px; left: 5px; font-size: 0.7rem; background: rgba(0,0,0,0.6); padding: 2px 5px; z-index: 10;">cam-01 [hq]</div>
-            
             <video id="live-video-player" controls autoplay playsinline muted></video>
-            
             <div class="screen-overlay">
                 <div style="font-size: 0.85rem; color: #fff;" id="active-channel-title">CH-03: LIVE FOOTBALL STADIUM HD</div>
                 <div style="font-size: 0.7rem; color: #94a3b8;" id="active-channel-desc">Broadcasting live football match streams.</div>
@@ -170,13 +159,12 @@
             <button class="cyber-btn btn-action" onclick="triggerEmergencyLock()">LOCK MATRIX</button>
             <button class="cyber-btn" onclick="triggerBackup()">BACKUP NOW</button>
             <button class="cyber-btn" onclick="location.href='/tv'" style="color: var(--magenta); font-weight: bold; grid-column: span 2;">📺 ផ្ទាំងទូរទស្សន៍ MATRIX TV</button>
-            
         </div>
     </div>
 
     <div class="panel" style="display: flex; justify-content: space-between; align-items: center;">
         <div>❄️ cooling control: <strong style="color: var(--cyan);">12.1°C</strong></div>
-        <div>🛡️ defense matrix: <strong style="color: var(--green);" id="node-status">45 layers active (ONLINE)</strong></div>
+        <div>🛡️ defense matrix: <span class="status-dot"></span> <strong style="color: var(--green);" id="node-status">45 layers active (ONLINE)</strong></div>
     </div>
 
     <div class="panel">
@@ -214,16 +202,63 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
-    <script src="/static/js/ty_ai369.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     
     <script>
-        var socket = io();
+        var socket = io.connect(window.location.origin);
         
-        // ចាប់យកទិន្នន័យ Live Log ពី Flask Server មកបោះចូលផ្ទាំង Terminal Screen
+        // --- ប្រព័ន្ធគ្រប់គ្រងវីដេអូ HLS STREAMING ---
+        const videoSources = {
+            football: "https://test-streams.mux.dev/x36xhprof/playlist.m3u8",
+            local: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8",
+            global: "https://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8"
+        };
+
+        function switchChannel(type) {
+            const video = document.getElementById('live-video-player');
+            const title = document.getElementById('active-channel-title');
+            const desc = document.getElementById('active-channel-desc');
+            if(!video) return;
+
+            let url = videoSources[type] || videoSources.football;
+            
+            if (type === 'football') {
+                title.innerText = "CH-03: LIVE FOOTBALL STADIUM HD";
+                desc.innerText = "Broadcasting live football match streams.";
+            } else if (type === 'local') {
+                title.innerText = "CH-01: LOCAL TV LIVE (CAMBODIA)";
+                desc.innerText = "ប្រព័ន្ធផ្សាយបន្តផ្ទាល់ប៉ុស្តិ៍ក្នុងស្រុកអក្ខរា។";
+            } else if (type === 'global') {
+                title.innerText = "CH-02: GLOBAL LOGISTICS NETWORK";
+                desc.innerText = "International stream feeds active.";
+            }
+
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.addEventListener('loadedmetadata', function() { video.play(); });
+            }
+            socket.emit('execute_command', { action: `SWITCH_CHANNEL: ${type.toUpperCase()}` });
+        }
+
+        async function togglePictureInPicture() {
+            const video = document.getElementById('live-video-player');
+            if(!video) return;
+            try {
+                if (document.pictureInPictureElement) { await document.exitPictureInPicture(); } 
+                else { await video.requestPictureInPicture(); }
+            } catch (e) { console.log(e); }
+        }
+
+        // --- ប្រព័ន្ធគ្រប់គ្រង SOCKET.IO LOGS & TELEMETRY ---
         socket.on('system_alert', function(data) {
             const logBox = document.getElementById('log-box');
             if(logBox) {
-                logBox.innerHTML += "<div>" + data.message + "</div>";
+                logBox.innerHTML += "<div style='color:" + (data.color || 'var(--green)') + "'>" + data.message + "</div>";
                 logBox.scrollTop = logBox.scrollHeight;
             }
         });
@@ -231,12 +266,11 @@
         socket.on('command_response', function(data) {
             const logBox = document.getElementById('log-box');
             if(logBox) {
-                logBox.innerHTML += "<div style='color:var(--green);'>▶ " + data.message + " ["+data.timestamp+"]</div>";
+                logBox.innerHTML += "<div style='color:var(--cyan);'>▶ [" + data.timestamp + "] " + data.message + "</div>";
                 logBox.scrollTop = logBox.scrollHeight;
             }
         });
 
-        // បង្ហាញស្ថានភាព Hardware Real-time
         socket.on('hardware_telemetry', function(data) {
             const telTxt = document.getElementById('telemetry-txt');
             if(telTxt) {
@@ -244,14 +278,49 @@
             }
         });
 
+        // --- មុខងារ CONTROLS ---
+        function triggerEmergencyLock() {
+            if (confirm("🚨 តើបងពិតជាចង់ធ្វើសកម្មភាព LOCK MATRIX គ្រាអាសន្នមែនទេ?")) {
+                fetch('/api/v1/matrix/security/lock', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.message);
+                    const statusDot = document.querySelector('.status-dot');
+                    const nodeStatus = document.getElementById('node-status');
+                    if(statusDot) {
+                        statusDot.style.background = 'var(--magenta)';
+                        statusDot.style.boxShadow = '0 0 8px var(--magenta)';
+                    }
+                    if(nodeStatus) {
+                        nodeStatus.innerText = "45 layers LOCKED (EMERGENCY)";
+                        nodeStatus.style.color = "var(--magenta)";
+                    }
+                }).catch(err => console.error("Error locking matrix:", err));
+            }
+        }
+
         function triggerBackup() {
             socket.emit('execute_command', {action: 'backup_now'});
         }
 
-        // កំណត់ម៉ោងឱ្យរត់ស្វ័យប្រវត្តតាម Real-time Clock
         setInterval(() => {
             document.getElementById('time-display').innerText = new Date().toLocaleString();
         }, 1000);
+
+        // --- ដំណើរការ MAP & INITIALIZATION ---
+        document.addEventListener("DOMContentLoaded", function() {
+            switchChannel('football');
+            
+            if (typeof L !== 'undefined' && document.getElementById('map')) {
+                var map = L.map('map').setView([11.5564, 104.9282], 14);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                L.marker([11.5564, 104.9282]).addTo(map).bindPopup('<b>Mahanokor 369 HQ</b>').openPopup();
+                
+                // គូសខ្សែ Cyan OSRM Dotted Route
+                var routePoints = [[11.5564, 104.9282], [11.5580, 104.9300], [11.5540, 104.9350]];
+                L.polyline(routePoints, {color: '#00f0ff', dashArray: '5, 10', weight: 4}).addTo(map);
+            }
+        });
     </script>
 </body>
 </html>
