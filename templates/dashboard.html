@@ -3,339 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔱 KHOEM SOKSIVUTHA | MAHANOKOR 369</title>
+    <title>MAHANOKOR 369 CONTROL SYSTEM</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        :root {
-            --bg-color: #020b14;
-            --panel-bg: rgba(0, 15, 30, 0.6);
-            --border: #004f77;
-            --cyan: #00ffc8;
-            --blue: #00a2ff;
-            --green: #00ff66;
-            --magenta: #ff0055;
-            --text-color: #8ab4f8;
-        }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: monospace;
-            margin: 0;
-            padding: 10px;
-            overflow-x: hidden;
-        }
-        .cyber-header {
-            border: 1px solid var(--border);
-            background: var(--panel-bg);
-            padding: 15px;
-            text-align: center;
-            box-shadow: inset 0 0 15px rgba(0, 79, 119, 0.2);
-            margin-bottom: 15px;
-        }
-        .panel {
-            border: 1px solid var(--border);
-            background: var(--panel-bg);
-            padding: 12px;
-            margin-bottom: 15px;
-            box-shadow: inset 0 0 15px rgba(0, 79, 119, 0.2);
-        }
-        .panel-title {
-            color: #fff;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            margin-top: 0;
-            margin-bottom: 10px;
-            border-left: 3px solid var(--cyan);
-            padding-left: 8px;
-            font-weight: bold;
-        }
-        .grid-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        .cyber-btn {
-            background: rgba(0, 20, 40, 0.4);
-            border: 1px solid var(--border);
-            color: var(--text-color);
-            padding: 12px;
-            cursor: pointer;
-            text-align: center;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            font-weight: bold;
-        }
-        .cyber-btn:hover {
-            border-color: var(--cyan);
-            color: var(--cyan);
-            box-shadow: 0 0 8px rgba(0, 255, 200, 0.2);
-        }
-        .btn-action {
-            border-color: rgba(255, 0, 85, 0.5) !important;
-            color: var(--magenta) !important;
-        }
-        .btn-action:hover {
-            border-color: var(--magenta) !important;
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.4) !important;
-        }
-        .cctv-screen {
-            background: #000;
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 16/9;
-            width: 100%;
-        }
-        video { width: 100%; height: 100%; object-fit: cover; }
-        .screen-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 10px; pointer-events: none; }
-        
-        .status-dot {
-            width: 8px; height: 8px; background: var(--green); border-radius: 50%;
-            display: inline-block; box-shadow: 0 0 8px var(--green);
-        }
-        #map {
-            height: 300px;
-            width: 100%;
-            border: 1px solid var(--border);
-            background: #01070e;
-        }
-        /* កែប្រែពណ៌ផែនទីទៅជា Cyberpunk Dark Mode */
-        .leaflet-layer, .leaflet-control-zoom {
-            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-        }
-        .terminal-screen {
-            background: #01070e;
-            border: 1px solid var(--border);
-            padding: 10px;
-            font-size: 0.8rem;
-            color: var(--green);
-            height: 120px;
-            overflow-y: auto;
-        }
-        .telemetry-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            margin: 8px 0;
-            border-bottom: 1px dashed rgba(0, 79, 119, 0.3);
-            padding-bottom: 5px;
-        }
+        :root { --bg: #020b14; --border: #004f77; --cyan: #00ffc8; --blue: #00a2ff; --green: #00ff66; --red: #ff0055; }
+        body { background: var(--bg); color: var(--blue); font-family: monospace; padding: 10px; margin: 0; }
+        .header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 15px; }
+        .panel { border: 1px solid var(--border); padding: 10px; margin-bottom: 15px; background: rgba(0,15,30,0.5); }
+        .grid-btn { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media(min-width: 768px) { .grid-btn { grid-template-columns: repeat(4, 1fr); } }
+        .btn { background: transparent; border: 1px solid var(--border); color: var(--blue); padding: 12px; cursor: pointer; font-family: inherit; }
+        .btn:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+        .btn-lock { border-color: var(--red); color: var(--red); }
+        #map { width: 100%; height: 260px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
-
-    <div class="cyber-header">
-        <h2 style="color: #fff; margin: 0 0 5px 0;">🔱 KHOEM SOKSIVUTHA | MAHANOKOR 369</h2>
-        <div style="font-size: 0.8rem; color: var(--cyan);">
-            CELESTIAL TIME: <span id="time-display">--/--/----, --:--:-- --</span> | STABLE ONLINE (100%)
-        </div>
-        <div style="font-size: 0.7rem; color: #526699; margin-top: 5px;">MICHAEL-EMPIRE PROTECTION PROTOCOL</div>
+    <div class="header">
+        <div style="color: #fff; font-weight: bold;">MAHANOKOR 369 CONTROL SYSTEM</div>
+        <div style="color: var(--green)">STATUS: ONLINE</div>
     </div>
 
     <div class="panel">
-        <div class="panel-title">⚡ REALM 369 CORE STATUS</div>
-        <div class="telemetry-row">
-            <span style="color: var(--cyan);">&gt; Live System Load:</span>
-            <span id="telemetry-txt" style="color: var(--green);">CPU: --% | RAM: --%</span>
-        </div>
-        <div class="telemetry-row">
-            <span style="color: var(--cyan);">&gt; Data Processing:</span>
-            <span style="color: #fff;">General Node 100% (Normal Status)</span>
-        </div>
-        <div class="grid-buttons" style="margin-top: 10px;">
-            <div class="cyber-btn">មគ្គុទ្ទេសក៍ I</div>
-            <div class="cyber-btn">មគ្គុទ្ទេសក៍ II</div>
-            <div class="cyber-btn">មគ្គុទ្ទេសក៍ III</div>
-            <div class="cyber-btn">អាកាសធាតុ</div>
-            <div class="cyber-btn">ផ្លូវកូដ</div>
-            <div class="cyber-btn">ប្រព័ន្ធទិន្នន័យ</div>
+        <div style="color: var(--cyan); margin-bottom: 10px; font-size: 0.85rem;">&gt; Sub-Zero Cooling System: ACTIVE (<span id="temp-val">12.2°C</span>)</div>
+        <div style="color: #fff; font-size: 0.8rem; margin-bottom: 10px;">MAIN CONTROLS (ZERO ERROR MATRIX)</div>
+        <div class="grid-btn">
+            <button class="btn" onclick="location.href='/config'">SYSTEM CONFIG</button>
+            <button class="btn">VIEW LOGS</button>
+            <button class="btn">STATUS CHECK</button>
+            <button class="btn btn-lock" onclick="lockMatrix()">LOCK MATRIX</button>
         </div>
     </div>
 
     <div class="panel">
-        <div class="panel-title">📹 ទិន្នន័យសន្តិសុខ CCTV & LIVE ENGINE</div>
-        <div class="cctv-screen">
-            <div style="position: absolute; top: 5px; left: 5px; font-size: 0.7rem; background: rgba(0,0,0,0.6); padding: 2px 5px; z-index: 10; color: #fff;">CAM-01 [HQ]</div>
-            <video id="live-video-player" controls autoplay playsinline muted></video>
-            <div class="screen-overlay">
-                <div style="font-size: 0.85rem; color: #fff; font-weight: bold;" id="active-channel-title">CH-03: LIVE FOOTBALL STADIUM HD</div>
-                <div style="font-size: 0.7rem; color: #94a3b8;" id="active-channel-desc">Broadcasting live football match streams.</div>
-            </div>
-        </div>
-        <div class="grid-buttons" style="margin-top: 10px;">
-            <button class="cyber-btn" onclick="switchChannel('football')">⚽ LIVE FOOTBALL</button>
-            <button class="cyber-btn" onclick="switchChannel('local')">📺 ប៉ុស្តិ៍ក្នុងស្រុក (Local)</button>
-            <button class="cyber-btn" onclick="switchChannel('global')">🌍 ប៉ុស្តិ៍អន្តរជាតិ (Global)</button>
-            <button class="cyber-btn" onclick="togglePictureInPicture()">📌 PiP Mode</button>
-        </div>
-    </div>
-
-    <div class="panel">
-        <div class="panel-title">⚙️ WORKSTATION CONTROLS (ZERO ERROR MATRIX)</div>
-        <div class="grid-buttons">
-            <button class="cyber-btn" onclick="location.href='/config'">SYSTEM CONFIG</button>
-            <div class="cyber-btn">VIEW LOGS</div>
-            <div class="cyber-btn" style="color: var(--cyan);">🌐 MARKET ROUTE</div>
-            <div class="cyber-btn">STATUS CHECK</div>
-            <button class="cyber-btn btn-action" onclick="triggerEmergencyLock()">LOCK MATRIX</button>
-            <button class="cyber-btn" onclick="triggerBackup()">BACKUP NOW</button>
-            <button class="cyber-btn" onclick="location.href='/tv'" style="color: var(--magenta); font-weight: bold; grid-column: span 2;">📺 ផ្ទាំងទូរទស្សន៍ MATRIX TV</button>
-        </div>
-    </div>
-
-    <div class="panel" style="display: flex; justify-content: space-between; align-items: center;">
-        <div>❄️ Cooling Control: <strong id="temp-val" style="color: var(--cyan);">12.2°C</strong></div>
-        <div>🛡️ Defense Matrix: <span class="status-dot"></span> <strong style="color: var(--green);" id="node-status">45 layers active (ONLINE)</strong></div>
-    </div>
-
-    <div class="panel">
-        <div class="panel-title">🗺️ ផែនទីឧបករណ៍សមាសភាគ (គូសខ្សែ OSRM Routing)</div>
+        <div style="color: #fff; font-size: 0.8rem; margin-bottom: 8px;">🗺️ សក្ដានុពលទីតាំងភូមិសាស្ត្រ KHOEM_AI HQ</div>
         <div id="map"></div>
-    </div>
-
-    <div class="panel">
-        <div class="panel-title">📁 ទិន្នន័យប្រព័ន្ធខួរក្បាល AI (FILE MANAGER)</div>
-        <button class="cyber-btn" style="background: #00b386; color: #fff; font-weight: bold; width: 100%; box-sizing: border-box;">
-            ចូលទៅកាន់ប្រអប់ទី ២ (FILE MANAGER)
-        </button>
-    </div>
-
-    <div class="panel">
-        <div class="panel-title">📟 បញ្ជាអាយកូម (TERMINAL LOG OUTPUT SCREEN)</div>
-        <div class="terminal-screen" id="log-box">
-            // mahanokor supreme console layer active<br>
-            [SYSTEM]: ty_ai369 broadcasting module initialized.<br>
-            [STREAM]: HLS video engine loaded successfully.<br>
-        </div>
-    </div>
-
-    <div class="panel">
-        <div class="panel-title">📊 CORE DYNAMIC DATABASE MODULES</div>
-        <div style="font-size: 0.8rem; line-height: 1.6;">
-            <span style="color: var(--cyan);">[Module 01]</span> Logistics hub data - <span style="color: var(--green);">Active</span><br>
-            <span style="color: var(--cyan);">[Module 02]</span> Sustainability & resource data - <span style="color: var(--green);">Secure</span>
-        </div>
-    </div>
-
-    <div style="text-align: center; font-size: 0.7rem; color: #43587d; margin-top: 20px; padding-bottom: 20px;">
-        © 2026 mahanokor matrix systems. zero-dynamic architecture.
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    
     <script>
         var socket = io.connect(window.location.origin);
-        
-        // --- លីងវីដេអូសម្រាប់ចាក់ផ្សាយ HLS STREAMING ---
-        const videoSources = {
-            football: "https://test-streams.mux.dev/x36xhprof/playlist.m3u8",
-            local: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8",
-            global: "https://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8"
-        };
-
-        function switchChannel(type) {
-            const video = document.getElementById('live-video-player');
-            const title = document.getElementById('active-channel-title');
-            const desc = document.getElementById('active-channel-desc');
-            if(!video) return;
-
-            let url = videoSources[type] || videoSources.football;
-            
-            if (type === 'football') {
-                title.innerText = "CH-03: LIVE FOOTBALL STADIUM HD";
-                desc.innerText = "Broadcasting live football match streams.";
-            } else if (type === 'local') {
-                title.innerText = "CH-01: LOCAL TV LIVE (CAMBODIA)";
-                desc.innerText = "ប្រព័ន្ធផ្សាយបន្តផ្ទាល់ប៉ុស្តិ៍ក្នុងស្រុកអក្ខរា។";
-            } else if (type === 'global') {
-                title.innerText = "CH-02: GLOBAL LOGISTICS NETWORK";
-                desc.innerText = "International stream feeds active.";
-            }
-
-            if (Hls.isSupported()) {
-                var hls = new Hls();
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = url;
-                video.addEventListener('loadedmetadata', function() { video.play(); });
-            }
-            socket.emit('execute_command', { action: `SWITCH_CHANNEL: ${type.toUpperCase()}` });
-        }
-
-        async function togglePictureInPicture() {
-            const video = document.getElementById('live-video-player');
-            if(!video) return;
-            try {
-                if (document.pictureInPictureElement) { await document.exitPictureInPicture(); } 
-                else { await video.requestPictureInPicture(); }
-            } catch (e) { console.log(e); }
-        }
-
-        // --- ទទួលទិន្នន័យ REAL-TIME TELEMETRY ពី Python ---
         socket.on('hardware_telemetry', function(data) {
-            const telTxt = document.getElementById('telemetry-txt');
-            const tempTxt = document.getElementById('temp-val');
-            if(telTxt) telTxt.innerText = `CPU: ${data.cpu}% | RAM: ${data.ram}%`;
-            if(tempTxt) tempTxt.innerText = data.temp + '°C';
+            document.getElementById('temp-val').innerText = data.temp + '°C';
         });
+        socket.on('system_alert', function(data) { console.log(data.message); });
 
-        socket.on('system_alert', function(data) {
-            const logBox = document.getElementById('log-box');
-            if(logBox) {
-                logBox.innerHTML += "<div style='color:" + (data.color || 'var(--green)') + "'>" + data.message + "</div>";
-                logBox.scrollTop = logBox.scrollHeight;
-            }
-        });
+        var map = L.map('map', {zoomControl: false}).setView([11.5564, 104.9282], 14);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png').addTo(map);
+        L.marker([11.5564, 104.9282]).addTo(map);
+        L.polyline([[11.5590, 104.9200], [11.5564, 104.9282]], {color: '#00ffc8', weight: 3, dashArray: '5, 10'}).addTo(map);
 
-        // --- មុខងារបញ្ជា LOCK MATRIX គ្រាអាសន្ន ---
-        function triggerEmergencyLock() {
-            if (confirm("🚨 តើបងពិតជាចង់ធ្វើសកម្មភាព LOCK MATRIX គ្រាអាសន្នមែនទេ?")) {
-                fetch('/api/v1/matrix/security/lock', { method: 'POST' })
-                .then(res => res.json())
-                .then(data => {
-                    alert(data.message);
-                    const statusDot = document.querySelector('.status-dot');
-                    const nodeStatus = document.getElementById('node-status');
-                    if(statusDot) {
-                        statusDot.style.background = 'var(--magenta)';
-                        statusDot.style.boxShadow = '0 0 8px var(--magenta)';
-                    }
-                    if(nodeStatus) {
-                        nodeStatus.innerText = "45 layers LOCKED (EMERGENCY)";
-                        nodeStatus.style.color = "var(--magenta)";
-                    }
-                }).catch(err => console.error("Error locking matrix:", err));
-            }
+        function lockMatrix() {
+            fetch('/api/v1/matrix/security/lock', { method: 'POST' })
+            .then(res => res.json()).then(data => alert(data.message));
         }
-
-        function triggerBackup() {
-            socket.emit('execute_command', {action: 'backup_now'});
-        }
-
-        setInterval(() => {
-            document.getElementById('time-display').innerText = new Date().toLocaleString();
-        }, 1000);
-
-        // --- បង្កើតផែនទី CYBERPUNK MAP ---
-        document.addEventListener("DOMContentLoaded", function() {
-            switchChannel('football');
-            
-            if (typeof L !== 'undefined' && document.getElementById('map')) {
-                var map = L.map('map', { zoomControl: false }).setView([11.5564, 104.9282], 14);
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png').addTo(map);
-                L.marker([11.5564, 104.9282]).addTo(map).bindPopup('<b>Mahanokor 369 HQ</b>').openPopup();
-                
-                // ខ្សែបន្ទាត់ដាច់ៗពណ៌ Cyan រត់កាត់ទីក្រុងភ្នំពេញ
-                var pathCoordinates = [[11.5590, 104.9200], [11.5575, 104.9245], [11.5564, 104.9282]];
-                L.polyline(pathCoordinates, {color: '#00ffc8', weight: 4, opacity: 0.8, dashArray: '6, 10'}).addTo(map);
-            }
-        });
     </script>
 </body>
 </html>
