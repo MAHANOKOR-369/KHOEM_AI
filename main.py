@@ -1,21 +1,66 @@
-from flask import Flask, render_template, jsonify
-import datetime
+import os
+import requests
+import shutil
+from datetime import datetime
+from flask import Flask, render_template, request, jsonify, session
+from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO, emit
+from werkzeug.security import generate_password_hash, check_password_hash
 
-app = Flask(__name__)
-    
 # ==========================================
-# ១. DASHBOARD & SYSTEM CONFIG MODULES
+# ១. SYSTEM INITIALIZATION & CONFIG
 # ==========================================
+# បង្កើត Folder ស្វ័យប្រវត្ត ការពារ OperationalError
+os.makedirs('data', exist_ok=True)
+os.makedirs('data/backups', exist_ok=True)
 
-# Route សម្រាប់ទំព័រដើម Dashboard របស់បង
+app = Flask(__name__, static_folder='static', template_folder='templates')
+app.config['SECRET_KEY'] = 'mahanokor_369_super_secret_key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/mahanokor.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+# កែសម្រួលឱ្យត្រូវជាមួយសេវាកម្មទិន្នន័យ Termux
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+# ==========================================
+# ២. DATABASE MODELS
+# ==========================================
+class SystemLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    action = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.String(50), nullable=False)
+
+class AdminUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password_hash = db.Column(db.String(200), nullable=False)
+
+# បង្កើត Database និងគណនី Admin គំរូ
+with app.app_context():
+    db.create_all()
+    if not AdminUser.query.filter_by(username='123').first():
+        hashed_pw = generate_password_hash('123456', method='pbkdf2:sha256')
+        db.session.add(AdminUser(username='123', password_hash=hashed_pw))
+        db.session.commit()
+
+# ==========================================
+# ៣. CORE DASHBOARD & MATRIX ROUTES
+# ==========================================
 @app.route('/')
+@app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    # ចូលទៅកាន់ផ្ទាំងរួមបញ្ចូលគ្នាដែលមានទាំង ផែនទី និង ទូរទស្សន៍ Live TV
+    return render_template('ty_ai369.html')
 
-# Route សម្រាប់ទំព័រ SYSTEM CONFIG 
 @app.route('/config')
 def config_page():
     return render_template('config.html')
+
+@app.route('/tv')
+def ty_ai369_matrix():
+    return render_template('ty_ai369.html')
 
 # API សម្រាប់ទាញទិន្នន័យ Dashboard មកបង្ហាញលើអេក្រង់ Real-time
 @app.route('/api/system/status')
@@ -25,23 +70,15 @@ def api_system_status():
         "core_version": "KHOEM_AI_v3.6.9",
         "defense_layers": 45,
         "cooling_temp": 12.1,
-        "server_time": datetime.datetime.now().strftime("%d/%m/%Y, %I:%M:%S %p")
+        "server_time": datetime.now().strftime("%d/%m/%Y, %I:%M:%S %p")
     })
-
-
-# ==========================================
-# ២. MAHANOKOR-369 TV & STREAMING MODULE
-# ==========================================
-
-# Route សម្រាប់បើកផ្ទាំងទូរទស្សន៍ ty_ai369
-@app.route('/tv')
-def ty_ai369_matrix():
-    return render_template('ty_ai369.html')
 
 # API សុវត្ថិភាពសម្រាប់បិទ/ចាក់សោប្រព័ន្ធទាន់ហេតុការណ៍
 @app.route('/api/v1/matrix/security/lock', methods=['POST'])
 def matrix_security_lock():
-    # ដំណើរការតក្កវិជ្ជាការពារកម្រិតខ្ពស់
+    new_log = SystemLog(action="EMERGENCY_LOCK", status='ACTIVATED')
+    db.session.add(new_log)
+    db.session.commit()
     return jsonify({
         "success": True,
         "message": "MAHANOKOR-369: Matrix Security Lock Activated Successfully."
@@ -59,15 +96,30 @@ def api_matrix_status():
         }
     })
 
+# ==========================================
+# ៤. SOCKET.IO REAL-TIME TELEMETRY
+# ==========================================
+def telemetry_thread():
+    while True:
+        socketio.sleep(1)
+        socketio.emit('hardware_telemetry', {'cpu': 45, 'ram': 60})
+
+@socketio.on('connect')
+def handle_connect():
+    socketio.start_background_task(telemetry_thread)
+    socketio.emit('system_alert', {'message': '⚙️ [system auth]: ពិនិត្យឃើញប្រព័ន្ធដំណើរការ! ប្រព័ន្ធសុវត្ថិភាព AI 369 និម្មិតរលូន ៤៥ ស្រទាប់ ដំណើរការធម្មតា!', 'color': '#00ff00'})
+
+@socketio.on('execute_command')
+def handle_command(data):
+    action = data.get('action')
+    new_log = SystemLog(action=action, status='EXECUTED')
+    db.session.add(new_log)
+    db.session.commit()
+    emit('command_response', {'action': action, 'message': f'ការអនុវត្ត {action} បានសម្រេច', 'timestamp': datetime.utcnow().strftime("%H:%M:%S")}, broadcast=True)
 
 # ==========================================
-# ៣. APPLICATION ENTRY POINT
+# ៥. APPLICATION ENTRY POINT
 # ==========================================
 if __name__ == '__main__':
-    # រត់នៅលើ Port 5000 តែមួយរួមគ្នា គ្រប់គ្រងគ្រប់ Modules ទាំងអស់
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
-if __name__ == '__main__':
-    # រត់នៅលើ Port 3690 ស្របតាម Termux របស់បង
-    app.run(host='0.0.0.0', port=3690, debug=True)
-    
+    # រត់នៅលើ Port 5000 (បងអាចប្តូរទៅ 3690 ត្រង់ port= បានតាមតម្រូវការ)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
