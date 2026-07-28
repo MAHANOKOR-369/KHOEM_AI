@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KHOEM SOKSIVUTHA | MAHANOKOR 369</title>
-    <!-- Leaflet CSS សម្រាប់ផែនទី -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Link ទៅកាន់ឯកសារ Style Cyberpunk ដែលយើងបានរៀបចំ -->
-    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         /* ប្រព័ន្ធពណ៌ និងការដេគ័រស្ទីល Cyberpunk Core */
         :root {
@@ -65,6 +63,7 @@
             text-align: center;
             font-size: 0.85rem;
             transition: all 0.3s;
+            font-family: inherit;
         }
         .cyber-btn:hover {
             border-color: var(--cyan);
@@ -74,28 +73,28 @@
             background: #7a1226 !important;
             border-color: var(--magenta) !important;
         }
+        
+        /* ផ្នែកកែសម្រួល៖ បញ្ចូល Video Frame ពិតប្រាកដសម្រាប់ Streaming */
         .cctv-screen {
-            background: #040811;
+            background: #000;
             border: 1px solid #1a263f;
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
-            flex-direction: column;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            width: 100%;
         }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        .screen-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 10px; pointer-events: none; }
+        
         .status-dot {
-            width: 10px;
-            height: 10px;
-            background: var(--green);
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 8px var(--green);
+            width: 10px; height: 10px; background: var(--green); border-radius: 50%;
+            display: inline-block; box-shadow: 0 0 8px var(--green);
         }
         #map {
-            height: 250px;
+            height: 300px;
             width: 100%;
             border: 1px solid var(--cyan);
+            border-radius: 4px;
         }
         .terminal-screen {
             background: #03060f;
@@ -103,39 +102,31 @@
             padding: 10px;
             font-size: 0.8rem;
             color: var(--green);
-            height: 100px;
+            height: 120px;
             overflow-y: auto;
         }
         .progress-bar {
-            background: #111a2e;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 5px;
+            background: #111a2e; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 5px;
         }
         .progress-fill {
-            height: 100%;
-            background: var(--green);
-            width: 100%;
+            height: 100%; background: var(--green); width: 100%;
         }
     </style>
 </head>
 <body>
 
-    <!-- SECTION: HEADER BANNER -->
     <div class="cyber-header">
         <h2 style="color: #fff; margin: 0 0 5px 0;">🔱 khoem soksivutha | mahanokor 369</h2>
         <div style="font-size: 0.8rem; color: var(--cyan);">
-            CELESTIAL TIME: <span id="time-display">26/7/2026, 12:00:44 PM</span> | stable online (100%)
+            CELESTIAL TIME: <span id="time-display">28/7/2026, 12:00:44 PM</span> | stable online (100%)
         </div>
         <div style="font-size: 0.7rem; color: #526699; margin-top: 5px;">MICHAEL-EMPIRE PROTECTION PROTOCOL</div>
     </div>
 
-    <!-- SECTION 1: REALM 369 CORE BUTTONS -->
     <div class="panel">
         <div class="panel-title">⚡ REALM 369 CORE BUTTONS</div>
         <div style="font-size: 0.75rem; color: var(--green); margin-bottom: 10px;">
-            [system] • ប្រព័ន្ធស្នូលរក្សាស្ថិរភាព (active)<br>
+            [system] • ប្រព័ន្ធស្នូលរក្សាស្ថិរភាព (active) | <span id="telemetry-txt">CPU: --% | RAM: --%</span><br>
             [node] + ដំណើរការទិន្នន័យទូទៅ 100%<br>
             [vigil] • ចាប់សញ្ញាបានធម្មតា - Main Core connected
         </div>
@@ -147,26 +138,28 @@
             <div class="cyber-btn">ផ្លូវកូដ</div>
             <div class="cyber-btn">ប្រព័ន្ធទិន្នន័យ</div>
         </div>
-        <div class="cyber-btn" style="margin-top: 10px; width: 100%; box-sizing: border-box;">ដែនផ្ទុកទិន្នន័យប្រភព</div>
     </div>
 
-    <!-- SECTION 2: CCTV SECURITY -->
     <div class="panel">
-        <div class="panel-title">📹 ទិន្នន័យសន្តិសុខ CCTV អក្ខរា</div>
+        <div class="panel-title">📹 ទិន្នន័យសន្តិសុខ CCTV & LIVE ENGINE</div>
         <div class="cctv-screen">
-            <div style="position: absolute; top: 5px; left: 5px; font-size: 0.7rem;">cam-01 [hq]</div>
-            <div style="position: absolute; top: 5px; right: 5px; font-size: 0.7rem; color: var(--magenta);">real-time stream</div>
-            <div class="status-dot"></div>
-            <div style="color: #fff; margin-top: 5px; font-size: 0.85rem;">phnom penh (hq)</div>
-            <div style="position: absolute; bottom: 5px; left: 5px; font-size: 0.7rem; color: #526699;">Status: secured (100%)</div>
+            <div style="position: absolute; top: 5px; left: 5px; font-size: 0.7rem; background: rgba(0,0,0,0.6); padding: 2px 5px; z-index: 10;">cam-01 [hq]</div>
+            
+            <video id="live-video-player" controls autoplay playsinline muted></video>
+            
+            <div class="screen-overlay">
+                <div style="font-size: 0.85rem; color: #fff;" id="active-channel-title">CH-03: LIVE FOOTBALL STADIUM HD</div>
+                <div style="font-size: 0.7rem; color: #94a3b8;" id="active-channel-desc">Broadcasting live football match streams.</div>
+            </div>
         </div>
         <div class="grid-buttons" style="margin-top: 10px;">
-            <div class="cyber-btn">ផ្អាក (hq)</div>
-            <div class="cyber-btn">ដំណើរការ</div>
+            <button class="cyber-btn" onclick="switchChannel('football')">⚽ LIVE FOOTBALL</button>
+            <button class="cyber-btn" onclick="switchChannel('local')">📺 ប៉ុស្តិ៍ក្នុងស្រុក (Local)</button>
+            <button class="cyber-btn" onclick="switchChannel('global')">🌍 ប៉ុស្តិ៍អន្តរជាតិ (Global)</button>
+            <button class="cyber-btn" onclick="togglePictureInPicture()">📌 PiP Mode</button>
         </div>
     </div>
 
-    <!-- SECTION 3: WORKSTATION CONTROLS -->
     <div class="panel">
         <div class="panel-title">⚙️ WORKSTATION CONTROLS (ZERO ERROR MATRIX)</div>
         <div class="grid-buttons">
@@ -174,105 +167,89 @@
             <div class="cyber-btn">VIEW LOGS</div>
             <div class="cyber-btn" style="color: var(--cyan);">🌐 MARKET ROUTE</div>
             <div class="cyber-btn">STATUS CHECK</div>
-            <div class="cyber-btn btn-action">LOCK MATRIX</div>
-            <div class="cyber-btn">BACKUP NOW</div>
+            <button class="cyber-btn btn-action" onclick="triggerEmergencyLock()">LOCK MATRIX</button>
+            <button class="cyber-btn" onclick="triggerBackup()">BACKUP NOW</button>
         </div>
     </div>
 
-    <!-- SECTION 4: COOLING & DEFENSE -->
     <div class="panel" style="display: flex; justify-content: space-between; align-items: center;">
         <div>❄️ cooling control: <strong style="color: var(--cyan);">12.1°C</strong></div>
-        <div>🛡️ defense matrix: <strong style="color: var(--green);">45 layers active</strong></div>
+        <div>🛡️ defense matrix: <strong style="color: var(--green);" id="node-status">45 layers active (ONLINE)</strong></div>
     </div>
 
-    <!-- SECTION 5: LEAFLET MAP -->
     <div class="panel">
-        <div class="panel-title">🗺️ ផែនទីឧបករណ៍សមាសភាគ</div>
+        <div class="panel-title">🗺️ ផែនទីឧបករណ៍សមាសភាគ (គូសខ្សែ OSRM Routing)</div>
         <div id="map"></div>
-        <div class="grid-buttons" style="margin-top: 10px;">
-            <div class="cyber-btn">📷 scan រូបភាព & ផ្ទៃទិន្នន័យ</div>
-            <div class="cyber-btn">🔗 scan សញ្ញាឧបករណ៍ព័ត៌មាន</div>
-        </div>
     </div>
 
-    <!-- SECTION 6: FILE MANAGER -->
     <div class="panel">
         <div class="panel-title">📁 ទិន្នន័យប្រព័ន្ធខួរក្បាល AI (FILE MANAGER)</div>
-        <div class="cyber-btn" style="background: #00b386; color: #fff; font-weight: bold; width: 100%; box-sizing: border-box; margin-bottom: 8px;">
+        <button class="cyber-btn" style="background: #00b386; color: #fff; font-weight: bold; width: 100%; box-sizing: border-box; margin-bottom: 8px;">
             ចូលទៅកាន់ប្រអប់ទី ២ (FILE MANAGER)
-        </div>
-        <div style="font-size: 0.75rem; color: #ffd700; text-align: center;">
-            📂 core_369.dat | shield_v2.conf | revenue_481.log
-        </div>
+        </button>
     </div>
 
-    <!-- SECTION 7: TERMINAL LOG -->
     <div class="panel">
-        <div class="panel-title" style="display: flex; justify-content: space-between;">
-            <span>📟 បញ្ជាអាយកូម (terminal log output screen)</span>
-            <span style="color: var(--magenta); font-size: 0.75rem; cursor: pointer;">open terminal</span>
-        </div>
-        <div class="terminal-screen">
+        <div class="panel-title">📟 បញ្ជាអាយកូម (terminal log output screen)</div>
+        <div class="terminal-screen" id="log-box">
             // mahanokor supreme console layer active<br>
-            [11:58:15 AM] 📡 [Intelligence]: កំពុងទាញយកទិន្នន័យឧបករណ៍...<br>
-            [11:58:17 AM] 🛡️ [Intelligence]: កំពុងការពារទិន្នន័យអត្តសញ្ញាណ...
+            [SYSTEM]: ty_ai369 broadcasting module initialized.<br>
+            [STREAM]: HLS video engine loaded successfully.<br>
         </div>
     </div>
 
-    <!-- SECTION 8: DATABASE MODULES -->
     <div class="panel">
         <div class="panel-title">📊 CORE DYNAMIC DATABASE MODULES</div>
         <div style="font-size: 0.8rem; line-height: 1.6;">
             <span style="color: var(--cyan);">[Module 01]</span> Logistics hub data - <span style="color: var(--green);">Active</span><br>
-            <span style="color: var(--cyan);">[Module 02]</span> Sustainability & resource data - <span style="color: var(--green);">Secure</span><br>
-            <span style="color: var(--cyan);">[Module 03]</span> Security surveillance matrix - <span style="color: var(--green);">Online</span><br>
-            <span style="color: var(--cyan);">[Module 04]</span> Lifestyle hotel status - <span style="color: var(--green);">Completed</span>
+            <span style="color: var(--cyan);">[Module 02]</span> Sustainability & resource data - <span style="color: var(--green);">Secure</span>
         </div>
     </div>
 
-    <!-- SECTION 9: CAR DETECTOR & SELF HEALING -->
-    <div class="panel">
-        <div class="panel-title">🚗 my car command detector</div>
-        <div style="font-size: 0.75rem; margin-bottom: 8px;">status: online & tracking | hq • engine: armed & locked | power 100%</div>
-        <ul style="margin: 0; padding-left: 20px; font-size: 0.8rem; color: #fff;">
-            <li>ម៉ាស៊ីនទិន្នន័យមេឌៀ</li>
-            <li>រេស៊ីស្តង់ខ្សែភ្លើង</li>
-            <li>ម៉ាស៊ីនវាស់សម្ពាធកម្តៅ</li>
-            <li>ខ្សែភ្ជាប់អគ្គិសនី</li>
-        </ul>
-        <div class="grid-buttons" style="margin-top: 10px;">
-            <div class="cyber-btn" style="background: #a37000;">🔐 ADMIN</div>
-            <div class="cyber-btn" style="background: #4c11a8;">⚙️ INIT CORE</div>
-        </div>
-    </div>
-
-    <div class="panel">
-        <div class="panel-title">🔋 SELF-HEALING MATRIX STATUS</div>
-        <div style="font-size: 0.8rem;">
-            botany system (agri) <span style="color: var(--green);">100%</span>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-        </div>
-        <div style="font-size: 0.8rem; margin-top: 8px;">
-            healthcare module (optimal) <span style="color: var(--green);">100%</span>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
     <div style="text-align: center; font-size: 0.7rem; color: #43587d; margin-top: 20px; padding-bottom: 20px;">
         © 2026 mahanokor matrix systems. zero-dynamic architecture.
     </div>
 
-    <!-- Leaflet JS សម្រាប់ដំណើរការផែនទីពិតប្រាកដ -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="/static/js/ty_ai369.js"></script>
+    
     <script>
-        // ដំណើរការបង្កើតផែនទីឱ្យលោតចំភ្នំពេញ (HQ) ដូចក្នុងវីដេអូ
-        var map = L.map('map').setView([11.5564, 104.9282], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-        L.marker([11.5564, 104.9282]).addTo(map)
-            .bindPopup('<b>Mahanokor 369 HQ</b><br>Phnom Penh.').openPopup();
+        var socket = io();
+        
+        // ចាប់យកទិន្នន័យ Live Log ពី Flask Server មកបោះចូលផ្ទាំង Terminal Screen
+        socket.on('system_alert', function(data) {
+            const logBox = document.getElementById('log-box');
+            if(logBox) {
+                logBox.innerHTML += "<div>" + data.message + "</div>";
+                logBox.scrollTop = logBox.scrollHeight;
+            }
+        });
+
+        socket.on('command_response', function(data) {
+            const logBox = document.getElementById('log-box');
+            if(logBox) {
+                logBox.innerHTML += "<div style='color:var(--green);'>▶ " + data.message + " ["+data.timestamp+"]</div>";
+                logBox.scrollTop = logBox.scrollHeight;
+            }
+        });
+
+        // បង្ហាញស្ថានភាព Hardware Real-time
+        socket.on('hardware_telemetry', function(data) {
+            const telTxt = document.getElementById('telemetry-txt');
+            if(telTxt) {
+                telTxt.innerText = `CPU: ${data.cpu}% | RAM: ${data.ram}%`;
+            }
+        });
+
+        function triggerBackup() {
+            socket.emit('execute_command', {action: 'backup_now'});
+        }
+
+        // កំណត់ម៉ោងឱ្យរត់ស្វ័យប្រវត្តតាម Real-time Clock
+        setInterval(() => {
+            document.getElementById('time-display').innerText = new Date().toLocaleString();
+        }, 1000);
     </script>
 </body>
 </html>
