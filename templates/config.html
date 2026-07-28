@@ -7,31 +7,31 @@
     <style>
         :root { --bg: #020b14; --border: #004f77; --cyan: #00ffc8; --blue: #00a2ff; --red: #ff0055; }
         body { background: var(--bg); color: var(--blue); font-family: monospace; padding: 10px; margin: 0; }
-        .header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 20px; }
-        .btn-top { background: transparent; border: 1px solid var(--border); color: var(--cyan); padding: 5px 10px; cursor: pointer; text-decoration: none; font-size: 0.8rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px; }
+        .btn-top { background: transparent; border: 1px solid var(--border); color: var(--cyan); padding: 6px 12px; cursor: pointer; text-decoration: none; font-size: 0.8rem; font-weight: bold; }
         .btn-red { border-color: var(--red); color: var(--red); }
-        .panel { border: 1px solid var(--border); padding: 15px; background: rgba(0,15,30,0.5); }
-        .actions { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-action { background: transparent; border: 1px solid var(--border); color: var(--blue); padding: 10px 15px; cursor: pointer; font-family: inherit; }
-        .btn-action:hover { border-color: var(--cyan); color: var(--cyan); }
+        .panel { border: 1px solid var(--border); padding: 15px; background: rgba(0,15,30,0.5); box-shadow: inset 0 0 15px rgba(0,79,119,0.2); }
+        .actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .btn-action { background: rgba(0,20,40,0.4); border: 1px solid var(--border); color: var(--blue); padding: 10px 15px; cursor: pointer; font-family: inherit; font-weight: bold; }
+        .btn-action:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px rgba(0,255,200,0.2); }
         .active-firewall { background: var(--cyan); color: var(--bg); border-color: var(--cyan); }
     </style>
 </head>
 <body>
     <div class="header">
         <a href="/dashboard" class="btn-top">&lt; BACK TO DASHBOARD</a>
-        <div style="color: #fff; font-size: 0.9rem;">MAHANOKOR 369 CONFIG MATRIX</div>
+        <div style="color: #fff; font-weight: bold;">MAHANOKOR 369 CONFIG MATRIX</div>
         <button class="btn-top btn-red">SECURE MODE</button>
     </div>
 
     <div class="panel">
-        <div style="color: #fff; font-size: 0.9rem; margin-bottom: 10px;">[ CORE CONFIGURATION PANEL ]</div>
-        <div style="font-size: 0.85rem; line-height: 1.6;">
+        <div style="color: #fff; font-size: 0.9rem; margin-bottom: 12px;">[ CORE CONFIGURATION PANEL ]</div>
+        <div style="font-size: 0.85rem; line-height: 1.8;">
             <span style="color: var(--cyan);">&gt; Encryption Status:</span> QUANTUM 256-BIT ENABLED<br>
             <span style="color: var(--cyan);">&gt; Access Node:</span> Terminal Boot @MAHANOKOR-369
         </div>
 
-        <div style="color: #00ff66; font-size: 0.85rem; margin-top: 25px;">&gt;&gt; SELECT MAINFRAME OPERATIONS:</div>
+        <div style="color: #00ff66; font-size: 0.85rem; margin-top: 25px; font-weight: bold;">&gt;&gt; SELECT MAINFRAME OPERATIONS:</div>
         <div class="actions">
             <button class="btn-action active-firewall">OVERRIDE FIREWALL</button>
             <button class="btn-action">CLEAR SYSTEM LOGS</button>
