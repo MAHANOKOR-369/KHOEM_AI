@@ -1,0 +1,36 @@
+<div class="chat-container">
+  <!-- Header & Prompt Selector -->
+  <div class="chat-header">
+    <h2>KHOEM_AI Chat</h2>
+    <div class="prompt-selector">
+      <label for="promptSelect">Role: </label>
+      <select id="promptSelect" (change)="onPromptChange($any($event.target).value)">
+        <option *ngFor="let opt of promptOptions" [value]="opt">{{ opt }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Messages List -->
+  <div class="messages-list">
+    <div *ngFor="let msg of messages()" [ngClass]="{'user-msg': msg.role === 'user', 'assistant-msg': msg.role === 'assistant'}">
+      <strong>{{ msg.role === 'user' ? 'បង' : 'Claude' }}:</strong>
+      <p>{{ msg.content }}</p>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading()" class="loading-indicator">
+      <p>Claude កំពុងគិត...</p>
+    </div>
+  </div>
+
+  <!-- Input Form -->
+  <div class="chat-input-area">
+    <textarea 
+      [ngModel]="userInput()" 
+      (ngModelChange)="userInput.set($event)" 
+      placeholder="សរសេរកន្លែងនេះ..." 
+      (keydown.enter)="$event.preventDefault(); sendMessage()">
+    </textarea>
+    <button (click)="sendMessage()" [disabled]="isLoading()">ផ្ញើ</button>
+  </div>
+</div>
