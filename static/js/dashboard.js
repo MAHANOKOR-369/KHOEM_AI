@@ -1,23 +1,26 @@
-// ឈ្មោះឯកសារ: static/js/dashboard.js
+/**
+ * ឯកសារ៖ dashboard.js
+ * មុខងារ៖ ធ្វើបច្ចុប្បន្នភាពទិន្នន័យលើអេក្រង់ ដូចជាតារាង ក្រាហ្វ និង CCTVs
+ */
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("KHOEM_AI Dashboard Loaded Successfully.");
+const DashboardUI = {
+    initCharts: function() {
+        console.log("[Dashboard] កំពុងរៀបចំក្រាហ្វចំណូល...");
+        // កូដគូរ Chart.js របស់ប្អូនអាចយកមកដាក់ក្នុងនេះបាន
+    },
 
-    // ចាប់យកប៊ូតុងទាំងអស់នៅលើទំព័រ
-    const buttons = document.querySelectorAll('button');
+    updateCCTV: function(location, statusText) {
+        document.getElementById("cctvid").innerHTML = `cam-${Math.floor(Math.random() * 10)} [${location}]`;
+        document.getElementById("cctvstatus").innerHTML = statusText;
+        console.log(`[UI] បានប្តូរ CCTV ទៅតំបន់: ${location}`);
+    },
 
-    buttons.forEach(button => {
-        // ដកមុខងារ onclick ចាស់ចេញសិន ដើម្បីកុំឱ្យជាន់គ្នា
-        button.removeAttribute('onclick');
-        
-        button.addEventListener('click', function(e) {
-            const serviceName = e.target.parentElement.querySelector('h3').innerText;
-            
-            // លោតផ្ទាំងបញ្ជាក់ទៅកាន់អតិថិជន
-            alert(`សូមអរគុណដែលចាប់អារម្មណ៍លើ: ${serviceName}\n\nសូមផ្ញើសារមកកាន់ Telegram: @ដាក់ឈ្មោះតេឡេក្រាមបងទីនេះ ដើម្បីពិភាក្សាលម្អិត និងបង់ប្រាក់។`);
-            
-            // បើកតេឡេក្រាមបងតែម្តង (បងអាចដូរលីងទៅតេឡេក្រាមបងផ្ទាល់)
-            // window.open('https://t.me/ដាក់ឈ្មោះតេឡេក្រាមបងទីនេះ', '_blank');
-        });
-    });
-});
+    logToTerminal: function(message, color = "#06b6d4") {
+        const terminal = document.getElementById("logoutput");
+        if (terminal) {
+            const time = new Date().toLocaleTimeString();
+            terminal.innerHTML += `<div><span class="text-slate-500">[${time}]</span> <span style="color: ${color}">${message}</span></div>`;
+            terminal.scrollTop = terminal.scrollHeight; // ឲ្យវារំកិលចុះក្រោមរហូត
+        }
+    }
+};
