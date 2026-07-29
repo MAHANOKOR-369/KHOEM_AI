@@ -34,7 +34,7 @@
             </div>
         </header>
 
-        <!-- ផ្ទៃបង្ហាញទិន្នន័យ (Grid Layout) -->
+        <!-- ផ្ទៃបង្ហាញទិន្នន័យ (Grid Layout ត្រឹមត្រូវ) -->
         <div class="main-grid">
             
             <!-- កាមេរ៉ា និងសេនស័រ (CCTV & Sensors) -->
@@ -66,46 +66,47 @@
                 </div>
                 <button class="btn-clear" onclick="AdminMatrix.wipeTemporaryLogs()">សម្អាត Terminal</button>
             </div>
-        </div>
-    </div>
 
-    <!-- ផ្ទាំងចុះឈ្មោះគោលដៅធានារ៉ាប់រង (Registration Matrix) -->
-<div class="panel form-panel">
-    <h3>📝 ចុះឈ្មោះគោលដៅធានារ៉ាប់រងថ្មី</h3>
-    <form id="registerForm" onsubmit="event.preventDefault(); addNewTarget();">
-        <input type="text" id="targetId" placeholder="លេខសម្គាល់ (ឧ. human_888, animal_k9...)" required style="width: 90%; padding: 8px; margin-bottom: 10px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
-        
-        <select id="targetType" style="width: 95%; padding: 8px; margin-bottom: 15px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
-            <option value="Vehicle">យានយន្ត (Vehicle)</option>
-            <option value="Machinery">គ្រឿងចក្រ (Machinery)</option>
-            <option value="Infrastructure">ហេដ្ឋារចនាសម្ព័ន្ធ (Infrastructure)</option>
-            <option value="Human">មនុស្ស (Human)</option>
-            <option value="Animal">សត្វ (Animal)</option>
-        </select>
-        
-        <button type="submit" class="btn-scan">បញ្ជូនទិន្នន័យចូល AI Core</button>
-    </form>
-</div>
+            <!-- ផ្ទាំងចុះឈ្មោះគោលដៅធានារ៉ាប់រង ត្រូវបានទាញមកដាក់ទីនេះ -->
+            <div class="panel form-panel">
+                <h3>📝 ចុះឈ្មោះគោលដៅធានារ៉ាប់រងថ្មី</h3>
+                <form id="registerForm" onsubmit="event.preventDefault(); addNewTarget();">
+                    <input type="text" id="targetId" placeholder="លេខសម្គាល់ (ឧ. human_888, animal_k9...)" required style="width: 90%; padding: 8px; margin-bottom: 10px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
+                    
+                    <select id="targetType" style="width: 95%; padding: 8px; margin-bottom: 15px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
+                        <option value="Vehicle">យានយន្ត (Vehicle)</option>
+                        <option value="Machinery">គ្រឿងចក្រ (Machinery)</option>
+                        <option value="Infrastructure">ហេដ្ឋារចនាសម្ព័ន្ធ (Infrastructure)</option>
+                        <option value="Human">មនុស្ស (Human)</option>
+                        <option value="Animal">សត្វ (Animal)</option>
+                    </select>
+                    
+                    <button type="submit" class="btn-scan">បញ្ជូនទិន្នន័យចូល AI Core</button>
+                </form>
+            </div>
 
-<!-- ផ្ទាំងតារាងទិន្នន័យ (Live Data Table) -->
-<div class="panel table-panel">
-    <h3>📊 ទិន្នន័យកំពុងស្ថិតក្រោមការធានា</h3>
-    <div class="table-container" style="max-height: 200px; overflow-y: auto;">
-        <table class="data-table" style="width: 100%; text-align: left; border-collapse: collapse;">
-            <thead>
-                <tr style="border-bottom: 1px solid var(--cyan); color: var(--gold);">
-                    <th>ID</th>
-                    <th>ប្រភេទ</th>
-                    <th>ហានិភ័យ</th>
-                    <th>ស្ថានភាព</th>
-                </tr>
-            </thead>
-            <tbody id="dataTableBody">
-                <!-- ទិន្នន័យពី AI នឹងលោតចូលទីនេះ -->
-            </tbody>
-        </table>
-    </div>
-</div>
+            <!-- ផ្ទាំងតារាងទិន្នន័យ ត្រូវបានទាញមកដាក់ទីនេះ -->
+            <div class="panel table-panel">
+                <h3>📊 ទិន្នន័យកំពុងស្ថិតក្រោមការធានា</h3>
+                <div class="table-container" style="max-height: 200px; overflow-y: auto;">
+                    <table class="data-table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--cyan); color: var(--gold);">
+                                <th>ID</th>
+                                <th>ប្រភេទ</th>
+                                <th>ហានិភ័យ</th>
+                                <th>ស្ថានភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                            <!-- ទិន្នន័យពី AI នឹងលោតចូលទីនេះ -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div> <!-- បិទ main-grid ត្រឹមត្រូវ -->
+    </div> <!-- បិទ dashboard ត្រឹមត្រូវ -->
     
     <!-- តភ្ជាប់ឯកសារ «ខួរក្បាល» (JavaScript) ទាំងអស់នៅខាងក្រោមគេ -->
     <script src="static/js/config.js"></script>
@@ -117,7 +118,7 @@
     <script src="static/js/mahanokor_core.js"></script>
     <script src="static/js/app.js"></script>
     
-    <!-- Function បញ្ឆោតសម្រាប់ហៅ Login -->
+    <!-- Function បញ្ជា -->
     <script>
         function customtrigger(action) {
             if(action === 'unlock_system') {
@@ -127,6 +128,27 @@
                     document.getElementById("dashboard").style.pointerEvents = "auto";
                 }
             }
+        }
+
+        // មុខងារនេះត្រូវតែមាន ដើម្បីឲ្យចុចប៊ូតុងចុះឈ្មោះទៅ វាដើរ
+        function addNewTarget() {
+            const id = document.getElementById("targetId").value;
+            const type = document.getElementById("targetType").value;
+            
+            if(typeof MahanokorInsuranceCore !== 'undefined') {
+                MahanokorInsuranceCore.insuranceRegistry[id] = {
+                    type: type,
+                    status: "Active",
+                    riskLevel: "Low",
+                    autoClaim: true
+                };
+                
+                if(typeof DashboardUI !== 'undefined') {
+                    DashboardUI.logToTerminal(`បានចុះឈ្មោះគោលដៅធានារ៉ាប់រងថ្មីជោគជ័យ៖ [${id}] - ប្រភេទ៖ ${type}`, "var(--green)");
+                    DashboardUI.renderTable();
+                }
+            }
+            document.getElementById("targetId").value = "";
         }
     </script>
 </body>
