@@ -57,3 +57,25 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("🔱 Mahanokor Core System [Insurance Matrix] is ONLINE.");
     MahanokorInsuranceCore.environmentalScan();
 });
+
+function addNewTarget() {
+    const id = document.getElementById("targetId").value;
+    const type = document.getElementById("targetType").value;
+    
+    // បន្ថែមទិន្នន័យចូលទៅក្នុង AI Core
+    MahanokorInsuranceCore.insuranceRegistry[id] = {
+        type: type,
+        status: "Active",
+        riskLevel: "Low", // កំណត់កម្រិតហានិភ័យទាបជាបឋម
+        autoClaim: true
+    };
+    
+    // បង្ហាញ Log ក្នុង Terminal
+    DashboardUI.logToTerminal(`បានចុះឈ្មោះគោលដៅធានារ៉ាប់រងថ្មីជោគជ័យ៖ [${id}] - ប្រភេទ៖ ${type}`, "var(--green)");
+    
+    // ធ្វើបច្ចុប្បន្នភាពតារាង
+    DashboardUI.renderTable();
+    
+    // លុបអក្សរក្នុងប្រអប់វិញ
+    document.getElementById("targetId").value = "";
+}
