@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahanokor 369 | AI Digital Insurance</title>
+    <title>Mahanokor 369 | AI Digital Insurance & Core Engine</title>
+    
+    <!-- ភ្ជាប់ឯកសារ CSS ដើមរបស់បង -->
     <link rel="stylesheet" href="static/css/style.css">
+    
+    <!-- បន្ថែម Style សម្រួលពីកូដទី២ ឱ្យស៊ីគ្នាជាមួយផ្ទាំង Dashboard -->
+    <style>
+        .matrix-btn { background: transparent; border: 1px solid #0f0; color: #0f0; padding: 10px 15px; cursor: pointer; margin: 5px; font-family: monospace; font-size: 13px; transition: 0.3s; }
+        .matrix-btn:hover { background: #0f0; color: #000; }
+        .matrix-link { color: #0f0; text-decoration: none; font-weight: bold; font-family: monospace; font-size: 14px; }
+        .matrix-link:hover { text-decoration: underline; color: #fff; }
+        .quick-links-list { list-style: none; padding: 0; }
+        .quick-links-list li { margin: 12px 0; }
+        .matrix-title { color: #0f0; margin-bottom: 10px; font-family: monospace; }
+    </style>
 </head>
 <body>
 
@@ -34,10 +47,10 @@
             </div>
         </header>
 
-        <!-- ផ្ទៃបង្ហាញទិន្នន័យ (Grid Layout ត្រឹមត្រូវ) -->
+        <!-- ផ្ទៃបង្ហាញទិន្នន័យ (Grid Layout) -->
         <div class="main-grid">
             
-            <!-- កាមេរ៉ា និងសេនស័រ (CCTV & Sensors) -->
+            <!-- [១]. កាមេរ៉ា និងសេនស័រ (CCTV & Sensors) -->
             <div class="panel cctv-panel">
                 <h3>🌐 ប្រព័ន្ធស្កេនគោលដៅ (CCTV/Sensors)</h3>
                 <div class="camera-feed">
@@ -49,7 +62,7 @@
                 </div>
             </div>
 
-            <!-- ប៊ូតុងបញ្ជា (Command Center) -->
+            <!-- [២]. ប៊ូតុងបញ្ជា (Insurance Command Center) -->
             <div class="panel control-panel">
                 <h3>⚡ មជ្ឈមណ្ឌលបញ្ជា (Admin Controls)</h3>
                 <button class="btn-scan" onclick="MainEngine.scanInsuranceNetwork()">ស្កេនបណ្តាញធានារ៉ាប់រង</button>
@@ -58,7 +71,25 @@
                 <button class="btn-supreme" onclick="AdminMatrix.initiateQuantumOverride()">🔥 ពិធីការ Admin 369</button>
             </div>
 
-            <!-- ផ្ទាំង Terminal (AI Logs) -->
+            <!-- [៣]. ប៊ូតុងបញ្ជាប្រព័ន្ធមេ (Mahanokor Core Engines) - បញ្ចូលពីកូដទី២ -->
+            <div class="panel control-panel" style="border-color: #0f0;">
+                <h3 class="matrix-title">🔱 MAHANOKOR CORE MATRIX</h3>
+                <button id="gpsButton" class="matrix-btn">📡 ស្កែន GPS</button>
+                <button id="locationButton" class="matrix-btn">📌 ទីតាំង</button>
+                <button id="energyButton" class="matrix-btn">⚡ ថាមពល</button>
+                <button id="dateButton" class="matrix-btn">📅 កាលបរិច្ឆេទ</button>
+            </div>
+
+            <!-- [៤]. តំណភ្ជាប់រហ័ស (Quick Links) - បញ្ចូលពីកូដទី២ -->
+            <div class="panel form-panel" style="border-color: #0f0; text-align: left;">
+                <h3 class="matrix-title">🔗 តំណភ្ជាប់រហ័ស (Quick Links)</h3>
+                <ul class="quick-links-list">
+                    <li><a href="/profile" class="matrix-link">👤 មេបញ្ជាការ (Profile)</a></li>
+                    <li><a href="/supreme-court" class="matrix-link">⚖️ តុលាការឌីជីថល (Supreme Court)</a></li>
+                </ul>
+            </div>
+
+            <!-- [៥]. ផ្ទាំង Terminal (AI Logs) -->
             <div class="panel terminal-panel">
                 <h3>💻 Mahanokor Terminal Logs</h3>
                 <div id="logoutput" class="terminal-screen">
@@ -67,11 +98,11 @@
                 <button class="btn-clear" onclick="AdminMatrix.wipeTemporaryLogs()">សម្អាត Terminal</button>
             </div>
 
-            <!-- ផ្ទាំងចុះឈ្មោះគោលដៅធានារ៉ាប់រង ត្រូវបានទាញមកដាក់ទីនេះ -->
+            <!-- [៦]. ផ្ទាំងចុះឈ្មោះគោលដៅធានារ៉ាប់រង -->
             <div class="panel form-panel">
                 <h3>📝 ចុះឈ្មោះគោលដៅធានារ៉ាប់រងថ្មី</h3>
                 <form id="registerForm" onsubmit="event.preventDefault(); addNewTarget();">
-                    <input type="text" id="targetId" placeholder="លេខសម្គាល់ (ឧ. human_888, animal_k9...)" required style="width: 90%; padding: 8px; margin-bottom: 10px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
+                    <input type="text" id="targetId" placeholder="លេខសម្គាល់ (ឧ. human_888...)" required style="width: 90%; padding: 8px; margin-bottom: 10px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
                     
                     <select id="targetType" style="width: 95%; padding: 8px; margin-bottom: 15px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
                         <option value="Vehicle">យានយន្ត (Vehicle)</option>
@@ -85,7 +116,7 @@
                 </form>
             </div>
 
-            <!-- ផ្ទាំងតារាងទិន្នន័យ ត្រូវបានទាញមកដាក់ទីនេះ -->
+            <!-- [៧]. ផ្ទាំងតារាងទិន្នន័យ -->
             <div class="panel table-panel">
                 <h3>📊 ទិន្នន័យកំពុងស្ថិតក្រោមការធានា</h3>
                 <div class="table-container" style="max-height: 200px; overflow-y: auto;">
@@ -105,10 +136,10 @@
                 </div>
             </div>
 
-        </div> <!-- បិទ main-grid ត្រឹមត្រូវ -->
-    </div> <!-- បិទ dashboard ត្រឹមត្រូវ -->
+        </div> <!-- បិទ main-grid -->
+    </div> <!-- បិទ dashboard -->
     
-    <!-- តភ្ជាប់ឯកសារ «ខួរក្បាល» (JavaScript) ទាំងអស់នៅខាងក្រោមគេ -->
+    <!-- តភ្ជាប់ឯកសារ Script ទាំងអស់ -->
     <script src="static/js/config.js"></script>
     <script src="static/js/api.js"></script>
     <script src="static/js/auth_engine.js"></script>
@@ -118,24 +149,49 @@
     <script src="static/js/mahanokor_core.js"></script>
     <script src="static/js/app.js"></script>
     
-    <!-- Function បញ្ជា -->
+    <!-- បញ្ចូល Script ថ្មីពីកូដទី២ (ប្រព័ន្ធ GPS និង មុខងារផ្សេងៗ) -->
+    <script src="/static/js/mahanokor_369.js"></script>
+    
+    <!-- Function បញ្ជា (Inline Scripts) -->
     <script>
         function customtrigger(action) {
             if(action === 'unlock_system') {
                 const key = document.getElementById("masterkey").value;
-                if(AuthEngine.verifyKey(key)){
-                    document.getElementById("dashboard").style.opacity = "1";
-                    document.getElementById("dashboard").style.pointerEvents = "auto";
+                // ត្រួតពិនិត្យជាមួយ AuthEngine បើមាន ឬប្រើ Key ផ្ទាល់
+                if(typeof AuthEngine !== 'undefined' && AuthEngine.verifyKey) {
+                    if(AuthEngine.verifyKey(key)){
+                        unlockDashboard();
+                    } else {
+                        showError();
+                    }
+                } else if(key === "906.106.905" || key === "369") {
+                    // Back-up ក្នុងករណីមិនទាន់មាន AuthEngine file
+                    unlockDashboard();
+                } else {
+                    showError();
                 }
             }
         }
 
-        // មុខងារនេះត្រូវតែមាន ដើម្បីឲ្យចុចប៊ូតុងចុះឈ្មោះទៅ វាដើរ
+        function unlockDashboard() {
+            document.getElementById("lockscreen").style.display = "none";
+            document.getElementById("dashboard").style.opacity = "1";
+            document.getElementById("dashboard").style.pointerEvents = "auto";
+        }
+
+        function showError() {
+            const errObj = document.getElementById("lockerrormsg");
+            errObj.innerText = "❌ លេខកូដសម្ងាត់មេមិនត្រឹមត្រូវ!";
+            errObj.style.display = "block";
+            setTimeout(() => errObj.style.display = "none", 3000);
+        }
+
+        // មុខងារបន្ថែមគោលដៅថ្មី
         function addNewTarget() {
             const id = document.getElementById("targetId").value;
             const type = document.getElementById("targetType").value;
             
-            if(typeof MahanokorInsuranceCore !== 'undefined') {
+            if(typeof MahanokorInsuranceCore !== 'undefined' && MahanokorInsuranceCore.insuranceRegistry) {
                 MahanokorInsuranceCore.insuranceRegistry[id] = {
                     type: type,
                     status: "Active",
@@ -143,10 +199,12 @@
                     autoClaim: true
                 };
                 
-                if(typeof DashboardUI !== 'undefined') {
+                if(typeof DashboardUI !== 'undefined' && DashboardUI.logToTerminal) {
                     DashboardUI.logToTerminal(`បានចុះឈ្មោះគោលដៅធានារ៉ាប់រងថ្មីជោគជ័យ៖ [${id}] - ប្រភេទ៖ ${type}`, "var(--green)");
                     DashboardUI.renderTable();
                 }
+            } else {
+                alert(`ប្រព័ន្ធបានទទួលទិន្នន័យ៖ [${id}] - ${type} (រង់ចាំភ្ជាប់ AI Core)`);
             }
             document.getElementById("targetId").value = "";
         }
