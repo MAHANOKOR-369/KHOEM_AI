@@ -101,7 +101,7 @@
             <!-- [៦]. ផ្ទាំងចុះឈ្មោះគោលដៅធានារ៉ាប់រង -->
             <div class="panel form-panel">
                 <h3>📝 ចុះឈ្មោះគោលដៅធានារ៉ាប់រងថ្មី</h3>
-                <form id="registerForm" onsubmit="event.preventDefault(); window.addNewTarget();">
+                <form id="registerForm" onsubmit="event.preventDefault(); addNewTarget();">
                     <input type="text" id="targetId" placeholder="លេខសម្គាល់ (ឧ. human_888...)" required style="width: 90%; padding: 8px; margin-bottom: 10px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
                     
                     <select id="targetType" style="width: 95%; padding: 8px; margin-bottom: 15px; background: #000; color: var(--cyan); border: 1px solid var(--cyan);">
@@ -157,6 +157,7 @@
         function customtrigger(action) {
             if(action === 'unlock_system') {
                 const key = document.getElementById("masterkey").value;
+                // ត្រួតពិនិត្យជាមួយ AuthEngine បើមាន ឬប្រើ Key ផ្ទាល់
                 if(typeof AuthEngine !== 'undefined' && AuthEngine.verifyKey) {
                     if(AuthEngine.verifyKey(key)){
                         unlockDashboard();
@@ -164,6 +165,7 @@
                         showError();
                     }
                 } else if(key === "906.106.905" || key === "369") {
+                    // Back-up ក្នុងករណីមិនទាន់មាន AuthEngine file
                     unlockDashboard();
                 } else {
                     showError();
@@ -184,50 +186,29 @@
             setTimeout(() => errObj.style.display = "none", 3000);
         }
 
-        // 📝 អនុគមន៍សម្រាប់បន្ថែមទិន្នន័យចុះឈ្មោះធានារ៉ាប់រងថ្មីចូលក្នុង Table & Terminal
-        window.addNewTarget = function() {
-            const targetIdInput = document.getElementById("targetId");
-            const targetTypeInput = document.getElementById("targetType");
-
-            const targetId = targetIdInput ? targetIdInput.value.trim() : "";
-            const targetType = targetTypeInput ? targetTypeInput.value : "Vehicle";
-
-            if (!targetId) {
-                alert("សូមបញ្ចូល ID គោលដៅជាមុនសិនបង!");
-                return;
-            }
-
-            // 1. បន្ថែមចូលក្នុង Table
-            const tableBody = document.getElementById("dataTableBody");
-            if (tableBody) {
-                if (tableBody.innerHTML.includes("⏳")) {
-                    tableBody.innerHTML = "";
+        // មុខងារបន្ថែមគោលដៅថ្មី
+        function addNewTarget() {
+            const id = document.getElementById("targetId").value;
+            const type = document.getElementById("targetType").value;
+            
+            if(typeof MahanokorInsuranceCore !== 'undefined' && MahanokorInsuranceCore.insuranceRegistry) {
+                MahanokorInsuranceCore.insuranceRegistry[id] = {
+                    type: type,
+                    status: "Active",
+                    riskLevel: "Low",
+                    autoClaim: true
+                };
+                
+                if(typeof DashboardUI !== 'undefined' && DashboardUI.logToTerminal) {
+                    DashboardUI.logToTerminal(`បានចុះឈ្មោះគោលដៅធានារ៉ាប់រងថ្មីជោគជ័យ៖ [${id}] - ប្រភេទ៖ ${type}`, "var(--green)");
+                    DashboardUI.renderTable();
                 }
-
-                const newRow = document.createElement("tr");
-                newRow.className = "border-b border-slate-800/40 hover:bg-slate-800/30 transition-all";
-                newRow.innerHTML = `
-                    <td style="color: var(--cyan); font-weight: bold; padding: 6px 0;">${targetId}</td>
-                    <td style="color: #ccc; padding: 6px 0;">${targetType}</td>
-                    <td style="padding: 6px 0;"><span style="color: #facc15; background: rgba(113, 63, 18, 0.4); border: 1px solid #713f12; padding: 2px 6px; border-radius: 4px; font-size: 10px;">Low Risk</span></td>
-                    <td style="color: #34d399; font-weight: bold; text-align: right; padding: 6px 0;">🟢 Active</td>
-                `;
-                tableBody.prepend(newRow);
+            } else {
+                alert(`ប្រព័ន្ធបានទទួលទិន្នន័យ៖ [${id}] - ${type} (រង់ចាំភ្ជាប់ AI Core)`);
             }
-
-            // 2. បង្ហាញកំណត់ហេតុក្នុង Terminal Output Screen
-            const logOutput = document.getElementById("logoutput");
-            if (logOutput) {
-                const logItem = document.createElement("div");
-                logItem.style.color = "#10b981";
-                logItem.innerText = `📝 [Registry]: បានចុះឈ្មោះគោលដៅថ្មី ID: ${targetId} (${targetType}) ចូលក្នុង Matrix រួចរាល់!`;
-                logOutput.appendChild(logItem);
-                logOutput.scrollTop = logOutput.scrollHeight;
-            }
-
-            // 3. សម្អាត Input Field
-            targetIdInput.value = "";
-        };
+            document.getElementById("targetId").value = "";
+        }
     </script>
 </body>
 </html>
+
