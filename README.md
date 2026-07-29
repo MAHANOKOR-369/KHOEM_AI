@@ -1,34 +1,19 @@
-# 🌐 Mahanokor 369 - AI Digital Insurance System
+# KHOEM_AI — Angular + Claude API
 
-ប្រព័ន្ធគ្រប់គ្រងការធានារ៉ាប់រងឌីជីថលឆ្លាតវៃ ដំណើរការដោយខួរក្បាលសិប្បនិម្មិត (AI) ដែលអាចត្រួតពិនិត្យ វាយតម្លៃហានិភ័យ និងផ្តល់សំណងដោយស្វ័យប្រវត្តិទៅលើ យានយន្ត គ្រឿងចក្រ ហេដ្ឋារចនាសម្ព័ន្ធ មនុស្ស និងសត្វ។
+កម្មវិធី Chat Interface បង្កើតឡើងដោយ Angular Standalone Components និង Signals ដោយភ្ជាប់ផ្ទាល់ទៅនឹង Claude API ។
 
-## 🚀 លក្ខណៈពិសេស (Features)
-- **🔐 Master Key Auth:** ប្រព័ន្ធសុវត្ថិភាពចាក់សោរ និងផ្ទៀងផ្ទាត់កម្រិតខ្ពស់។
-- **🤖 Mahanokor AI Core:** ខួរក្បាលស្នូលកណ្តាលសម្រាប់វាយតម្លៃហានិភ័យ និងកិច្ចសន្យាឆ្លាតវៃ (Smart Contracts)។
-- **⚡ Auto-Heal & Scanning:** មុខងារស្កេនបណ្តាញ និងជួសជុលប្រព័ន្ធដោយស្វ័យប្រវត្តិ។
-- **👑 Admin 369 Supreme Protocol:** ពិធីការគ្រប់គ្រងជាន់ខ្ពស់សម្រាប់តែស្ថាបនិកប៉ុណ្ណោះ។
-- **📊 Real-time Dashboard:** ផ្ទាំងគ្រប់គ្រងដែលមាន Terminal Logs និងប្រព័ន្ធកាមេរ៉ាសុវត្ថិភាព (CCTV/Sensors)។
+## 📋 របៀបរៀបចំប្រព័ន្ធ (Days 1 - 7)
 
-## 📂 រចនាសម្ព័ន្ធថតឯកសារ (Folder Structure)
+| ថ្ងៃ | ឯកសារ | មុខងារសំខាន់ៗ |
+| :--- | :--- | :--- |
+| **1-2** | `claude.service.ts` | ភ្ជាប់ Angular ទៅ Claude API តាមរយៈ HttpClient |
+| **3-5** | `prompt-examples.ts` | កំណត់ប្រភេទទម្រង់ System Prompts ផ្សេងៗ |
+| **6-7** | `chat.component.ts/html/css` | ផ្ទៃមុខកម្មវិធី Chat Interface ពេញលេញ |
 
-រៀបចំឯកសារតាមទម្រង់ខាងក្រោម ដើម្បីឲ្យប្រព័ន្ធដំណើរការបានល្អ៖
+---
 
-```text
-Mahanokor_Insurance/
-│
-├── index.html               # ឯកសារ HTML មេ (ផ្ទាំង Lockscreen និង Dashboard)
-├── README.md                # សៀវភៅណែនាំគម្រោង (ឯកសារនេះឯង)
-│
-└── static/
-    ├── css/
-    │   └── style.css        # ឯកសាររចនាបថ (UI/UX Design)
-    │
-    └── js/                  # ម៉ាស៊ីន និងខួរក្បាលប្រព័ន្ធ (AI Logic)
-        ├── config.js        # ទិន្នន័យកំណត់រចនាសម្ព័ន្ធ និងសោសម្ងាត់
-        ├── api.js           # បណ្តាញតភ្ជាប់ទិន្នន័យ (Frontend -> Backend)
-        ├── auth_engine.js   # ម៉ាស៊ីនផ្ទៀងផ្ទាត់សុវត្ថិភាពចូលប្រព័ន្ធ
-        ├── dashboard.js     # គ្រប់គ្រងមុខងារបញ្ជាលើអេក្រង់ UI
-        ├── main_engine.js   # ម៉ាស៊ីនដំណើរការទូទៅ (Scan, Heal...)
-        ├── admin369.js      # មុខងារកម្រិតកំពូលរបស់ Admin
-        ├── mahanokor_core.js# ខួរក្បាលស្នូលវាយតម្លៃសំណងធានារ៉ាប់រង
-        └── app.js           # ឯកសារដាស់ប្រព័ន្ធពេលបើកវេបសាយដំបូង
+## ⚙️ របៀបដំណើរការ
+
+1. បង្កើត Angular project ថ្មី (បើមិនទាន់មាន):
+   ```bash
+   ng new KHOEM_AI
