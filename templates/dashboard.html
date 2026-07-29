@@ -3,40 +3,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔱 mahanokor 369 | supreme command center</title>
+    <title>🔱 Mahanokor 369 | Supreme Command Center</title>
     
+    <!-- Tailwind CSS & Plugins -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=kantumruy+pro:wght@300;400;700&family=fira+code:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;700&family=Fira+Code:wght@400;600&display=swap');
         
         body {
-            font-family: 'kantumruy pro', sans-serif;
+            font-family: 'Kantumruy Pro', sans-serif;
             background-color: #030712;
             color: #f3f4f6;
             overflow-x: hidden;
         }
         
         .code-font {
-            font-family: 'fira code', monospace;
-        }
-
-        /* គំនូរជីវចលវិល */
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* ខ្សែស្កេនពណ៌ពេជ្រដែលរត់ចុះឡើង (diamond laser scanner) */
-        .scanner-bar {
-            height: 3px;
-            background: linear-gradient(95deg, transparent, #06b6d4, #14b8a6, #06b6d4, transparent);
-            position: relative;
-            animation: scan 4s ease-in-out infinite;
-            box-shadow: 0 0 12px #06b6d4, 0 0 24px #14b8a6;
+            font-family: 'Fira Code', monospace;
         }
 
         @keyframes scan {
@@ -45,7 +31,14 @@
             100% { top: 0%; }
         }
 
-        /* glow effects for premium ui/ux design */
+        .scanner-bar {
+            height: 3px;
+            background: linear-gradient(95deg, transparent, #06b6d4, #14b8a6, #06b6d4, transparent);
+            position: relative;
+            animation: scan 4s ease-in-out infinite;
+            box-shadow: 0 0 12px #06b6d4, 0 0 24px #14b8a6;
+        }
+
         .glow-border {
             box-shadow: 0 0 15px rgba(20, 184, 166, 0.15);
             border: 1px solid rgba(20, 184, 166, 0.25);
@@ -59,19 +52,11 @@
             text-shadow: 0 0 10px rgba(234, 179, 8, 0.6);
         }
 
-        /* cctv scanline overlay style */
         .cctv-scanline {
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.25) 50%
-            ), linear-gradient(
-                90deg,
-                rgba(255, 0, 0, 0.06),
-                rgba(0, 255, 0, 0.02),
-                rgba(0, 0, 255, 0.06)
-            );
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
             background-size: 100% 4px, 6px 100%;
             position: absolute;
             top: 0;
@@ -79,7 +64,6 @@
             pointer-events: none;
         }
 
-        /* custom scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #020617; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
@@ -99,12 +83,12 @@
 </head>
 <body class="p-3 md:p-6 min-h-screen flex flex-col justify-between">
   
-    <!-- 🔒 ផ្ទាំងសុវត្ថិភាពចាក់សោរប្រព័ន្ធមេ -->
+    <!-- 🔒 ផ្ទាំងសុវត្ថិភាពចាក់សោរប្រព័ន្ធមេ (Lock Screen) -->
     <div id="lockscreen" class="fixed inset-0 z-50 flex items-center justify-center lock-screen-container">
         <div class="bg-slate-950/95 p-8 rounded-3xl border border-slate-800 glow-border max-w-md w-full mx-4 text-center">
             <span class="text-4xl block mb-3 animate-bounce">🔒</span>
-            <h2 class="text-xl font-bold text-teal-400 glow-text-teal tracking-wide uppercase mb-1">system security active</h2>
-            <p class="text-xs text-slate-500 font-mono tracking-widest mb-4">mahanokor 369 | sovereign identity</p>
+            <h2 class="text-xl font-bold text-teal-400 glow-text-teal tracking-wide uppercase mb-1">System Security Active</h2>
+            <p class="text-xs text-slate-500 font-mono tracking-widest mb-4">Mahanokor 369 | Sovereign Identity</p>
             
             <div id="lockerrormsg" class="hidden text-xs text-red-500 bg-red-950/40 border border-red-900 rounded-lg p-2 mb-4">
                 ⚠️ ពិធីការបរាជ័យ៖ លេខកូដសម្ងាត់មិនត្រឹមត្រូវទេបង!
@@ -115,7 +99,7 @@
             </div>
             
             <button class="w-full bg-teal-950/80 hover:bg-teal-900 border border-teal-700 text-teal-200 py-3 rounded-xl font-bold transition-all shadow-lg active:scale-95" onclick="customtrigger('unlock_system')">
-                🔓 unlock master system
+                🔓 Unlock Master System
             </button>
             <p class="text-[10px] text-slate-600 mt-4 leading-relaxed">
                 ច្បាប់ការពារកម្មសិទ្ធិបញ្ញា៖ ក្រុមហ៊ុនឯកជន ឬសាជីវកម្មត្រូវបានហាមឃាត់ដាច់ខាត។
@@ -136,7 +120,7 @@
                     <span class="absolute bottom-0 right-0 bg-yellow-500 text-slate-950 text-[10px] font-bold rounded-full w-4.5 h-4.5 flex items-center justify-center border border-slate-950">⭐</span>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold text-yellow-400 glow-text-gold tracking-wide">🔱 khoem soksivutha | mahanokor 369</h1>
+                    <h1 class="text-lg font-bold text-yellow-400 glow-text-gold tracking-wide">🔱 Khoem Soksivutha | Mahanokor 369</h1>
                     <div class="text-[11px] text-teal-400 flex flex-wrap gap-2 mt-1">
                         <span class="bg-slate-950 px-2 py-0.5 rounded-full border border-slate-800">id: ai_369_400_401</span>
                         <span class="bg-slate-950 px-2 py-0.5 rounded-full border border-slate-800 text-yellow-400">signature: 906.106.905</span>
@@ -145,8 +129,8 @@
                 </div>
             </div>
             <div class="text-right flex flex-col items-center lg:items-end">
-                <div id="clock" class="text-xs text-teal-400 font-mono tracking-widest bg-slate-950/80 px-3 py-1 rounded-lg border border-slate-800">celestial time: synchronizing...</div>
-                <span class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-mono">michael-empire protection protocol</span>
+                <div id="clock" class="text-xs text-teal-400 font-mono tracking-widest bg-slate-950/80 px-3 py-1 rounded-lg border border-slate-800">CELESTIAL TIME: SYNCHRONIZING...</div>
+                <span class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-mono">Michael-Empire Protection Protocol</span>
             </div>
         </div>
     </header>
@@ -154,14 +138,15 @@
     <!-- 🎛️ ផ្ទាំងបញ្ជាកណ្តាល - Main Interface Grid -->
     <main class="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
         
-        <!-- 👈 SECTION 1: ខាងឆ្វេង (Core Buttons & CCTV) -->
+        <!-- 👈 SECTION 1: ខាងឆ្វេង (Core Buttons, CCTV & Radio) -->
         <section class="lg:col-span-3 flex flex-col gap-6">
             
+            <!-- 🔱 Realm 369 Core Buttons -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
-                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🔱 realm 369 core buttons</h2>
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🔱 Realm 369 Core Buttons</h2>
                 
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-[11px] font-mono leading-relaxed text-emerald-400 h-24 overflow-y-auto">
-                    <div>[system]៖ 🟢 ប្រព័ន្ធស្នូលរួមបញ្ចូលគ្នាដំណើរការ (active)</div>
+                    <div>[system]៖ 🟢 ប្រព័ន្ធស្នូលរួមបញ្ចូលគ្នាដំណើរការ (Active)</div>
                     <div>[mode]៖ ដំណើរការដោយមិនមានកំហុស ១០០%</div>
                     <div id="monitortext" class="text-slate-400">ត្រៀមខ្លួនទទួលពាក្យបញ្ជា...</div>
                 </div>
@@ -191,8 +176,9 @@
                 </div>
             </div>
 
+            <!-- 🎥 CCTV Monitoring Panel -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
-                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">🎥 ម៉ូនីទ័រសន្តិសុខ cctv កម្ពុជា</h2>
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">🎥 ម៉ូនីទ័រសន្តិសុខ CCTV កម្ពុជា</h2>
                 
                 <div class="relative bg-slate-950 h-32 rounded-xl overflow-hidden border border-slate-800 flex flex-col justify-between p-3">
                     <div class="cctv-scanline"></div>
@@ -201,7 +187,7 @@
                         <span>real-time stream</span>
                     </div>
                     <div class="flex justify-center items-center flex-grow text-xs text-slate-500 font-mono" id="cctvloctext">
-                        <span class="animate-pulse mr-2">🟢</span> phnom penh (hq)
+                        <span class="animate-pulse mr-2">🟢</span> Phnom Penh (HQ)
                     </div>
                     <div class="flex justify-between items-end text-[9px] font-mono text-cyan-400 relative z-10">
                         <span id="cctvstatus">status: secured (100%)</span>
@@ -210,97 +196,102 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 text-[11px]">
-                    <button onclick="customtrigger('cctv_pp')" class="py-1.5 bg-slate-950 hover:bg-slate-800 text-slate-300 rounded-lg border border-slate-800 hover:border-teal-500 transition-all">ភ្នំពេញ (hq)</button>
+                    <button onclick="customtrigger('cctv_pp')" class="py-1.5 bg-slate-950 hover:bg-slate-800 text-slate-300 rounded-lg border border-slate-800 hover:border-teal-500 transition-all">ភ្នំពេញ (HQ)</button>
                     <button onclick="customtrigger('cctv_pp_border')" class="py-1.5 bg-slate-950 hover:bg-slate-800 text-slate-300 rounded-lg border border-slate-800 hover:border-teal-500 transition-all">ប៉ោយប៉ែត</button>
                     <button onclick="customtrigger('cctv_pv')" class="py-1.5 bg-slate-950 hover:bg-slate-800 text-slate-300 rounded-lg border border-slate-800 hover:border-teal-500 transition-all">ព្រៃវែង</button>
                     <button onclick="customtrigger('cctv_coastal')" class="py-1.5 bg-slate-950 hover:bg-slate-800 text-slate-300 rounded-lg border border-slate-800 hover:border-teal-500 transition-all">តំបន់ឆ្នេរ</button>
                 </div>
             </div>
 
-            <!-- 📻 វិទ្យុទាក់ទងរយៈចម្ងាយឆ្ងាយ (Radio Panel Inserted Here) -->
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3 radio-panel">
-                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1 radio-title">
-                    📻 វិទ្យុទាក់ទង (long-range hf)
+            <!-- 📻 Radio Panel -->
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                    📻 វិទ្យុទាក់ទង (Long-Range HF)
                 </h2>
-                <div class="flex flex-col gap-2 channel-container">
-                    <div class="channel-box bg-slate-950 p-2.5 border border-slate-800 hover:border-teal-500 rounded-xl flex justify-between items-center cursor-pointer transition-all active:scale-98" onclick="togglelogicbtn(this)">
-                        <span class="channel-name text-xs text-slate-200">📍 ទំនាក់ទំនងទូទៅ</span>
-                        <span class="channel-freq text-[10px] text-teal-400 font-mono">145.369 mhz</span>
+                <div class="flex flex-col gap-2">
+                    <div class="bg-slate-950 p-2.5 border border-slate-800 hover:border-teal-500 rounded-xl flex justify-between items-center cursor-pointer transition-all active:scale-98" onclick="togglelogicbtn(this)">
+                        <span class="text-xs text-slate-200">📍 ទំនាក់ទំនងទូទៅ</span>
+                        <span class="text-[10px] text-teal-400 font-mono">145.369 MHz</span>
                     </div>
-                    <div class="channel-box bg-slate-950 p-2.5 border border-slate-800 hover:border-teal-500 rounded-xl flex justify-between items-center cursor-pointer transition-all active:scale-98" onclick="togglelogicbtn(this)">
-                        <span class="channel-name text-xs text-slate-200">📍 សកល</span>
-                        <span class="channel-freq text-[10px] text-teal-400 font-mono">433.369 mhz</span>
+                    <div class="bg-slate-950 p-2.5 border border-slate-800 hover:border-teal-500 rounded-xl flex justify-between items-center cursor-pointer transition-all active:scale-98" onclick="togglelogicbtn(this)">
+                        <span class="text-xs text-slate-200">📍 សកល</span>
+                        <span class="text-[10px] text-teal-400 font-mono">433.369 MHz</span>
                     </div>
                 </div>
             </div>
 
         </section>
 
-        <!-- 👑 SECTION 2: កណ្តាល (Workstation, Maps, Tables & Matrix Terminal) -->
+        <!-- 👑 SECTION 2: កណ្តាល (Workstation, Maps, Dynamic Databases & Terminal) -->
         <section class="lg:col-span-6 flex flex-col gap-6">
             
+            <!-- Workstation Controls -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">workstation controls (zero error matrix)</div>
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Workstation Controls (Zero Error Matrix)</div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                    <button onclick="customtrigger('safe_config')" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-slate-300 transition-all uppercase">system config</button>
-                    <button onclick="customtrigger('safe_logs')" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-slate-300 transition-all uppercase">view logs</button>
-                    <button onclick="customtrigger('market_route')" class="py-2.5 bg-slate-950 hover:bg-teal-950 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-teal-400 font-bold transition-all uppercase">🌐 market route</button>
-                    <button onclick="customtrigger('status_check')" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-slate-300 transition-all uppercase">status check</button>
-                    <button onclick="customtrigger('lock_system')" class="py-2.5 bg-red-950/20 hover:bg-red-900 border border-red-900 hover:border-red-500 rounded-xl text-xs font-mono text-red-400 transition-all uppercase">lock matrix</button>
-                    <button onclick="customtrigger('backup_now')" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-slate-300 transition-all uppercase">backup now</button>
+                    <button onclick="customtrigger('safe_config')" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-slate-300 transition-all uppercase">System Config</button>
+                    <button onclick="customtrigger('safe_logs')" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-slate-300 transition-all uppercase">View Logs</button>
+                    <button onclick="customtrigger('market_route')" class="py-2.5 bg-slate-950 hover:bg-teal-950 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-teal-400 font-bold transition-all uppercase">🌐 Market Route</button>
+                    <button onclick="customtrigger('status_check')" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-slate-300 transition-all uppercase">Status Check</button>
+                    <button onclick="customtrigger('lock_system')" class="py-2.5 bg-red-950/20 hover:bg-red-900 border border-red-900 hover:border-red-500 rounded-xl text-xs font-mono text-red-400 transition-all uppercase">Lock Matrix</button>
+                    <button onclick="customtrigger('backup_now')" class="py-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 rounded-xl text-xs font-mono text-slate-300 transition-all uppercase">Backup Now</button>
                 </div>
             </div>
 
+            <!-- Climate & Defense Status -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono leading-relaxed">
                     <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
-                        <span class="text-slate-400">❄️ cooling control:</span>
+                        <span class="text-slate-400">❄️ Cooling Control:</span>
                         <div class="flex items-center gap-2">
-                            <span id="cputemp" class="text-cyan-400 font-bold">14.2°c</span>
+                            <span id="cputemp" class="text-cyan-400 font-bold">14.2°C</span>
                             <button onclick="customtrigger('cool_temp_down')" class="bg-slate-800 hover:bg-teal-900 border border-slate-700 w-5 h-5 flex items-center justify-center rounded text-[10px]">-</button>
                             <button onclick="customtrigger('cool_temp_up')" class="bg-slate-800 hover:bg-teal-900 border border-slate-700 w-5 h-5 flex items-center justify-center rounded text-[10px]">+</button>
                         </div>
                     </div>
                     <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
-                        <span class="text-slate-400">🛡️ defense matrix:</span>
-                        <span class="text-emerald-400 font-bold">45 security layers active</span>
+                        <span class="text-slate-400">🛡️ Defense Matrix:</span>
+                        <span class="text-emerald-400 font-bold">45 Security Layers</span>
                     </div>
                 </div>
             </div>
 
+            <!-- Map Panel -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 relative overflow-hidden flex flex-col gap-3">
                 <div class="scanner-bar absolute left-0 right-0 opacity-10 pointer-events-none"></div>
                 <div class="flex justify-between items-center">
                     <h2 class="text-xs font-bold text-slate-300 flex items-center gap-2">
                         <span>🗺️</span> ផែនទីផ្កាយរណបស្កេនរ៉ាដា
                     </h2>
-                    <span class="text-[10px] text-teal-400 font-mono">active target view</span>
+                    <span class="text-[10px] text-teal-400 font-mono">Active Target View</span>
                 </div>
                 <div id="map"></div>
                 <div class="grid grid-cols-2 gap-3">
                     <button onclick="customtrigger('scan_ocean')" class="py-2.5 bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs rounded-xl transition-all">
-                        📸 scan រូបភាព & ផ្ទៃសមុទ្រ
+                        📸 Scan រូបភាព & ផ្ទៃសមុទ្រ
                     </button>
                     <button onclick="customtrigger('scan_border')" class="py-2.5 bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs rounded-xl transition-all">
-                        🔗 scan រន្ធស្រមោលព្រំដែន
+                        🔗 Scan រន្ធស្រមោលព្រំដែន
                     </button>
                 </div>
             </div>
 
+            <!-- Room Two Button -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
                 <button onclick="customtrigger('fetch_room_two')" class="py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs rounded-xl transition-all w-full uppercase">
-                    ចូលបន្ទប់លេខ ២ (file manager)
+                    ចូលបន្ទប់លេខ ២ (File Manager)
                 </button>
                 <div id="roomtwocontent" class="mt-3 text-center text-xs code-font text-slate-300"></div>
             </div>
 
+            <!-- Terminal Log Output Screen -->
             <div class="bg-slate-900/90 rounded-2xl border border-slate-800 flex flex-col overflow-hidden">
                 <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950/20">
                     <h2 class="text-xs font-bold text-teal-400 glow-text-teal flex items-center gap-2">
-                        <span class="animate-pulse">🟢</span> ម៉ាទ្រីសទិន្នន័យ (terminal log output screen)
+                        <span class="animate-pulse">🟢</span> ម៉ាទ្រីសទិន្នន័យ (Terminal Log Output Screen)
                     </h2>
                     <button onclick="customtrigger('clear_logs')" class="text-[10px] px-2.5 py-1 bg-red-950/30 hover:bg-red-900 border border-red-900 text-red-300 rounded-lg transition-all">
-                        សម្អាត terminal
+                        សម្អាត Terminal
                     </button>
                 </div>
                 <div id="logoutput" class="p-4 h-48 overflow-y-auto bg-slate-950/95 text-xs code-font flex flex-col gap-1.5 scroll-smooth">
@@ -310,68 +301,68 @@
 
             <!-- 🗃️ Core Dynamic Database Modules -->
             <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 flex flex-col gap-4">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 border-b border-slate-800 pb-2">[🗃️] core dynamic database modules</div>
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 border-b border-slate-800 pb-2">[🗃️] Core Dynamic Database Modules</div>
                 
                 <div class="overflow-x-auto">
-                    <h3 class="text-xs font-bold text-cyan-400 font-mono mb-2">[module 1] logistics hub data</h3>
+                    <h3 class="text-xs font-bold text-cyan-400 font-mono mb-2">[Module 1] Logistics Hub Data</h3>
                     <table class="w-full text-left border-collapse text-[11px] font-mono">
                         <thead>
                             <tr class="border-b border-slate-800 text-slate-500">
-                                <th class="pb-1.5 pr-2">id</th>
+                                <th class="pb-1.5 pr-2">ID</th>
                                 <th class="pb-1.5">ទំនិញ / សកម្មភាព</th>
                                 <th class="pb-1.5 text-right">ស្ថានភាព</th>
                             </tr>
                         </thead>
                         <tbody id="logisticstable" class="text-slate-300">
-                            <tr><td colspan="3" class="py-2 text-slate-500">⏳ generating matrix pulse...</td></tr>
+                            <tr><td colspan="3" class="py-2 text-slate-500">⏳ Generating matrix pulse...</td></tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="overflow-x-auto mt-2">
-                    <h3 class="text-xs font-bold text-yellow-500 font-mono mb-2">[module 2] sustainability & resource data</h3>
+                    <h3 class="text-xs font-bold text-yellow-500 font-mono mb-2">[Module 2] Sustainability & Resource Data</h3>
                     <table class="w-full text-left border-collapse text-[11px] font-mono">
                         <thead>
                             <tr class="border-b border-slate-800 text-slate-500">
-                                <th class="pb-1.5 pr-2">id</th>
+                                <th class="pb-1.5 pr-2">ID</th>
                                 <th class="pb-1.5">ប្រភពធនធាន</th>
                                 <th class="pb-1.5 text-right">កម្រិតថាមពល</th>
                             </tr>
                         </thead>
                         <tbody id="sustainabilitytable" class="text-slate-300">
-                            <tr><td colspan="3" class="py-2 text-slate-500">⏳ generating matrix pulse...</td></tr>
+                            <tr><td colspan="3" class="py-2 text-slate-500">⏳ Generating matrix pulse...</td></tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="overflow-x-auto mt-2">
-                    <h3 class="text-xs font-bold text-red-400 font-mono mb-2">[module 3] security surveillance matrix</h3>
+                    <h3 class="text-xs font-bold text-red-400 font-mono mb-2">[Module 3] Security Surveillance Matrix</h3>
                     <table class="w-full text-left border-collapse text-[11px] font-mono">
                         <thead>
                             <tr class="border-b border-slate-800 text-slate-500">
-                                <th class="pb-1.5 pr-2">id</th>
+                                <th class="pb-1.5 pr-2">ID</th>
                                 <th class="pb-1.5">តំបន់ត្រួតពិនិត្យ</th>
                                 <th class="pb-1.5 text-right">កម្រិតហានិភ័យ</th>
                             </tr>
                         </thead>
                         <tbody id="securitytable" class="text-slate-300">
-                            <tr><td colspan="3" class="py-2 text-slate-500">⏳ generating matrix pulse...</td></tr>
+                            <tr><td colspan="3" class="py-2 text-slate-500">⏳ Generating matrix pulse...</td></tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="overflow-x-auto mt-2">
-                    <h3 class="text-xs font-bold text-teal-400 font-mono mb-2">[module 4] eco lifestyle hotel status</h3>
+                    <h3 class="text-xs font-bold text-teal-400 font-mono mb-2">[Module 4] Eco Lifestyle Hotel Status</h3>
                     <table class="w-full text-left border-collapse text-[11px] font-mono">
                         <thead>
                             <tr class="border-b border-slate-800 text-slate-500">
-                                <th class="pb-1.5 pr-2">id</th>
+                                <th class="pb-1.5 pr-2">ID</th>
                                 <th class="pb-1.5">លេខបន្ទប់</th>
                                 <th class="pb-1.5 text-right">អត្រាទំនេរ</th>
                             </tr>
                         </thead>
                         <tbody id="hoteltable" class="text-slate-300">
-                            <tr><td colspan="3" class="py-2 text-slate-500">⏳ generating matrix pulse...</td></tr>
+                            <tr><td colspan="3" class="py-2 text-slate-500">⏳ Generating matrix pulse...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -379,12 +370,12 @@
 
             <!-- Vault System Data Panel -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🛡️ mahanokor-369 | ប្រព័ន្ធទូដែកសាកល</h3>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🛡️ Mahanokor-369 | ប្រព័ន្ធទូដែកសាកល</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-[11px] font-mono">
                         <thead>
                             <tr class="border-b border-slate-800 text-slate-500">
-                                <th class="pb-1.5 pr-2">id អត្តសញ្ញាណ</th>
+                                <th class="pb-1.5 pr-2">ID អត្តសញ្ញាណ</th>
                                 <th class="pb-1.5">ស្ថានភាពប្រព័ន្ធ</th>
                                 <th class="pb-1.5 text-right">តម្លៃសេវា</th>
                             </tr>
@@ -399,74 +390,78 @@
                     </table>
                 </div>
                 <div class="bg-slate-950/80 p-3 rounded-xl border border-teal-950">
-                    <span class="text-xs font-bold text-teal-400">👨‍🎓 សម្រាប់សិស្សនិស្សិត (free access)</span>
-                    <p class="text-[10px] text-teal-200/80 mt-1">ចុះឈ្មោះជាមួយលេខ id សិស្សនិស្សិតដើម្បីទទួលបានសិទ្ធិពិសេសទម្លុះទូដែកការពារ 6hd។</p>
+                    <span class="text-xs font-bold text-teal-400">👨‍🎓 សម្រាប់សិស្សនិស្សិត (Free Access)</span>
+                    <p class="text-[10px] text-teal-200/80 mt-1">ចុះឈ្មោះជាមួយលេខ ID សិស្សនិស្សិតដើម្បីទទួលបានសិទ្ធិពិសេសទម្លុះទូដែកការពារ 6HD។</p>
                 </div>
             </div>
 
         </section>
 
-        <!-- 👉 SECTION 3: ខាងស្តាំ (Identity, Weather, Chart Market & Scanners) -->
+        <!-- 👉 SECTION 3: ខាងស្តាំ (Identity, Weather, Chart Market, Secure Vault & Scanners) -->
         <section class="lg:col-span-3 flex flex-col gap-6">
             
+            <!-- Sovereign Identity Profile -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-2">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🌌 supreme divine identity</div>
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">🌌 Supreme Divine Identity</div>
                 <div class="text-xs font-mono flex flex-col gap-1 bg-slate-950 p-3 rounded-xl border border-slate-800 leading-relaxed">
-                    <div>👤 <b>the sovereign profile</b></div>
-                    <div class="mt-1">name: <span class="text-yellow-400 font-bold">khoem soksivutha</span></div>
-                    <div>titles: supreme divine deity</div>
-                    <div class="mt-1">⚡ <b>capabilities</b></div>
-                    <div>signature: <span class="text-teal-400 font-bold">906 . 106 . 905 | 🔱</span></div>
+                    <div>👤 <b>The Sovereign Profile</b></div>
+                    <div class="mt-1">Name: <span class="text-yellow-400 font-bold">Khoem Soksivutha</span></div>
+                    <div>Titles: Supreme Divine Deity</div>
+                    <div class="mt-1">⚡ <b>Capabilities</b></div>
+                    <div>Signature: <span class="text-teal-400 font-bold">906 . 106 . 905 | 🔱</span></div>
                     <div class="mt-2 text-center bg-red-950/30 border border-red-900 rounded p-1.5 text-[10px] text-red-400 font-bold">
-                        🛡️ 45-layer auto defense active
+                        🛡️ 45-Layer Auto Defense Active
                     </div>
                 </div>
             </div>
 
+            <!-- Weather Radar Scanner -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">🌦️ weather radar scanner</div>
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">🌦️ Weather Radar Scanner</div>
                 <div class="grid grid-cols-2 gap-2">
                     <button onclick="customtrigger('scan_weather_level_1')" class="py-2 bg-slate-950 hover:bg-slate-800 text-[11px] text-slate-300 rounded-xl border border-slate-800 transition-all">⛈️ កម្រិត ១</button>
                     <button onclick="customtrigger('scan_weather_level_2')" class="py-2 bg-slate-950 hover:bg-slate-800 text-[11px] text-slate-300 rounded-xl border border-slate-800 transition-all">🌀 កម្រិត ២</button>
                 </div>
             </div>
 
-            <!-- 🛒 Chart Market Panel -->
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3 market-panel">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">📊 mahanokor revenue matrix</div>
-                <div class="w-full h-32 flex items-center justify-center chart-container">
+            <!-- Chart Market Panel -->
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">📊 Mahanokor Revenue Matrix</div>
+                <div class="w-full h-32 flex items-center justify-center">
                     <canvas id="revenuechart"></canvas>
                 </div>
                 <div class="text-[10px] text-slate-500 font-mono text-center">
-                    target: $400,401 | status: <span class="text-emerald-400 font-bold">online</span>
+                    Target: $400,401 | Status: <span class="text-emerald-400 font-bold">Online</span>
                 </div>
             </div>
 
-            <!-- 🔐 Secure Vault Panel (Inserted with premium layout) -->
-            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3 secure-vault-v2">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">🔐 secure vault systems v2</div>
-                <div class="relative bg-slate-950 h-24 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center cursor-pointer face-scanner" onclick="startfacescanning()">
+            <!-- Secure Vault Systems v2 -->
+            <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">🔐 Secure Vault Systems v2</div>
+                <div class="relative bg-slate-950 h-24 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center cursor-pointer" onclick="startfacescanning()">
                     <div class="scan-line absolute w-full h-0.5 bg-cyan-400 shadow-[0_0_10px_#06b6d4] top-0 animate-[scan_2.5s_ease-in-out_infinite]"></div>
                     <span class="text-xs text-slate-500 font-mono uppercase tracking-widest pointer-events-none">[មុខងារស្កេនផ្ទៃមុខ]</span>
                 </div>
                 <div class="grid grid-cols-5 gap-2">
-                    <button class="col-span-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 py-2.5 rounded-xl flex items-center justify-center text-sm finger-btn" onclick="togglelogicbtn(this)">
+                    <button class="col-span-1 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-teal-500 py-2.5 rounded-xl flex items-center justify-center text-sm" onclick="togglelogicbtn(this)">
                         👆
                     </button>
-                    <button class="col-span-4 bg-teal-950/80 hover:bg-teal-900 border border-teal-700 text-teal-200 font-bold text-xs py-2.5 rounded-xl transition-all process-btn uppercase" onclick="togglelogicbtn(this)">
+                    <button class="col-span-4 bg-teal-950/80 hover:bg-teal-900 border border-teal-700 text-teal-200 font-bold text-xs py-2.5 rounded-xl transition-all uppercase" onclick="togglelogicbtn(this)">
                         ⚡ បើកប្រព័ន្ធដោះស្រាយ
                     </button>
                 </div>
             </div>
 
+            <!-- Car Command Detector -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 text-xs leading-relaxed font-mono">
-                <div class="text-slate-300">🚘 <b>my car command detector</b></div>
+                <div class="text-slate-300">🚘 <b>My Car Command Detector</b></div>
                 <div class="text-[11px] text-slate-400 mt-1">
-                    • status: online & tracking | hq<br>
-                    • engine: armed & locked | power: 100%
+                    • Status: Online & Tracking | HQ<br>
+                    • Engine: Armed & Locked | Power: 100%
                 </div>
             </div>
 
+            <!-- ម៉ាស៊ីនស្កេនមហាសកល -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-2">
                 <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1">🛡️ ម៉ាស៊ីនស្កេនមហាសកល</div>
                 <div class="flex flex-col gap-1.5 text-xs">
@@ -486,25 +481,27 @@
                         <span>🌌 &gt; ស្កេនលំហអាកាស</span>
                     </button>
                     <button onclick="customtrigger('scan_dark')" class="py-2 px-3 bg-slate-950 text-left border border-red-900 hover:border-red-500 rounded-lg text-red-400 transition-all flex justify-between items-center font-bold">
-                        <span>👁️‍尋 &gt; ស្កេនពួកភ្លើងងងឹត</span>
+                        <span>👁️‍🗨️ &gt; ស្កេនពួកភ្លើងងងឹត</span>
                     </button>
                 </div>
             </div>
 
+            <!-- Quantum Controls -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 grid grid-cols-2 gap-2 text-xs">
-                <button onclick="customtrigger('quantum_admin')" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-yellow-400 font-bold uppercase transition-all">🔐 admin</button>
-                <button onclick="customtrigger('quantum_voice')" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-cyan-400 font-bold uppercase transition-all">🎙️ voice</button>
-                <button onclick="customtrigger('quantum_init')" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-purple-400 font-bold uppercase transition-all">init core</button>
-                <button onclick="customtrigger('quantum_shield')" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-purple-400 font-bold uppercase transition-all">shield</button>
+                <button onclick="customtrigger('quantum_admin')" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-yellow-400 font-bold uppercase transition-all">🔐 Admin</button>
+                <button onclick="customtrigger('quantum_voice')" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-cyan-400 font-bold uppercase transition-all">🎙️ Voice</button>
+                <button onclick="customtrigger('quantum_init')" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-purple-400 font-bold uppercase transition-all">Init Core</button>
+                <button onclick="customtrigger('quantum_shield')" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-purple-400 font-bold uppercase transition-all">Shield</button>
             </div>
 
+            <!-- Self-Healing Matrix Status -->
             <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 flex flex-col gap-3">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">♻️ self-healing matrix status</div>
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">♻️ Self-Healing Matrix Status</div>
                 
                 <div class="flex flex-col gap-3 text-[10px] font-mono">
                     <div>
                         <div class="flex justify-between mb-1">
-                            <span class="text-slate-400">🌾 botany system (agri)</span>
+                            <span class="text-slate-400">🌾 Botany System (Agri)</span>
                             <span id="healthagri" class="text-emerald-400 font-bold">100%</span>
                         </div>
                         <div class="bg-slate-950 h-1 rounded-full overflow-hidden">
@@ -513,7 +510,7 @@
                     </div>
                     <div>
                         <div class="flex justify-between mb-1">
-                            <span class="text-slate-400">🏥 healthcare module (optimal)</span>
+                            <span class="text-slate-400">🏥 Healthcare Module (Optimal)</span>
                             <span id="healthhealth" class="text-emerald-400 font-bold">100%</span>
                         </div>
                         <div class="bg-slate-950 h-1 rounded-full overflow-hidden">
@@ -523,14 +520,14 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 mt-2">
-                    <button onclick="customtrigger('simulate_fault')" class="py-2 bg-red-950/20 hover:bg-red-950/40 border border-red-900 text-red-300 text-[10px] rounded-lg transition-all font-mono">simulate fault</button>
-                    <button onclick="customtrigger('auto_heal')" class="py-2 bg-teal-950/40 hover:bg-teal-900 border border-teal-800 text-teal-300 text-[10px] rounded-lg transition-all font-mono">activate heal</button>
+                    <button onclick="customtrigger('simulate_fault')" class="py-2 bg-red-950/20 hover:bg-red-950/40 border border-red-900 text-red-300 text-[10px] rounded-lg transition-all font-mono">Simulate Fault</button>
+                    <button onclick="customtrigger('auto_heal')" class="py-2 bg-teal-950/40 hover:bg-teal-900 border border-teal-800 text-teal-300 text-[10px] rounded-lg transition-all font-mono">Activate Heal</button>
                 </div>
             </div>
 
-            <!-- 🏅 Premium System Badge Elements -->
+            <!-- System Badge -->
             <div class="flex justify-center items-center p-2 bg-slate-950 border border-slate-900 rounded-xl">
-                <div class="badge text-[10px] font-mono text-slate-600 tracking-widest uppercase">khoem401grab-lgtm</div>
+                <div class="text-[10px] font-mono text-slate-600 tracking-widest uppercase">khoem401grab-lgtm</div>
             </div>
 
         </section>
@@ -539,8 +536,8 @@
 
     <!-- 📜 ផ្នែកបាតទំព័រ - Matrix Footer Status -->
     <footer class="max-w-7xl w-full mx-auto mt-6 text-center text-xs text-slate-500 border-t border-slate-900 pt-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <p>© 2026 mahanokor matrix systems. zero-error dynamic architecture.</p>
-        <p class="text-teal-400 glow-text-teal">owner & creator: deity khoem soksivutha (signature: 906.106.905)</p>
+        <p>© 2026 Mahanokor Matrix Systems. Zero-Error Dynamic Architecture.</p>
+        <p class="text-teal-400 glow-text-teal">Owner & Creator: Deity Khoem Soksivutha (Signature: 906.106.905)</p>
     </footer>
 
     <!-- ⚙️ JavaScript Engine (Core System) -->
@@ -573,21 +570,18 @@
             clear() {
                 const output = document.getElementById("logoutput");
                 if (output) {
-                    output.innerHTML = `<div class="text-slate-500">// mahanokor supreme console layer active</div>`;
+                    output.innerHTML = `<div class="text-slate-500">// Mahanokor Supreme Console Layer Active</div>`;
                 }
             }
         };
 
         function initmahanokormap() {
-            if (typeof L === 'undefined') {
-                console.error("❌ [error]: រកមិនឃើញបណ្ណាល័យ leaflet!");
-                return;
-            }
+            if (typeof L === 'undefined') return;
             map = L.map('map', { attributionControl: false }).setView([11.5685, 104.9210], 12);
             markerslayer = L.layerGroup().addTo(map);
             L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}').addTo(map);
             dronemarker = L.marker([11.5685, 104.9210]).addTo(markerslayer);
-            dronemarker.bindPopup("<b>mahanokor node hq</b>").openPopup();
+            dronemarker.bindPopup("<b>Mahanokor Node HQ</b>").openPopup();
         }
 
         const drawradarroute = (coords, title = "គោលដៅ") => {
@@ -608,13 +602,6 @@
                     const val = systemstate.healthlevels[sys];
                     textel.innerHTML = `${val}%`;
                     barel.style.width = `${val}%`;
-                    if (val === 100) {
-                        barel.className = "bg-emerald-500 h-1 transition-all duration-500";
-                    } else if (val < 50) {
-                        barel.className = "bg-red-500 h-1 transition-all duration-500 animate-pulse";
-                    } else {
-                        barel.className = "bg-yellow-500 h-1 transition-all duration-500";
-                    }
                 }
             });
         };
@@ -623,58 +610,26 @@
             const logistable = document.getElementById("logisticstable");
             if (logistable) {
                 logistable.innerHTML = `
-                    <tr class="border-b border-slate-800/40">
-                        <td class="py-1.5 text-cyan-400">LH-01</td>
-                        <td>ដឹកជញ្ជូនអង្ករប្រណីតទៅកំពង់ផែ</td>
-                        <td class="text-right text-emerald-400">⏳ កំពុងធ្វើដំណើរ</td>
-                    </tr>
-                    <tr class="border-b border-slate-800/40">
-                        <td class="py-1.5 text-cyan-400">LH-02</td>
-                        <td>ចែកចាយកោសិកាថាមពល Solar 369</td>
-                        <td class="text-right text-emerald-400">⏳ ជោគជ័យ</td>
-                    </tr>`;
+                    <tr class="border-b border-slate-800/40"><td class="py-1.5 text-cyan-400">LH-01</td><td>ដឹកជញ្ជូនអង្ករប្រណីតទៅកំពង់ផែ</td><td class="text-right text-emerald-400">⏳ កំពុងធ្វើដំណើរ</td></tr>
+                    <tr class="border-b border-slate-800/40"><td class="py-1.5 text-cyan-400">LH-02</td><td>ចែកចាយកោសិកាថាមពល Solar 369</td><td class="text-right text-emerald-400">⏳ ជោគជ័យ</td></tr>`;
             }
             const susttable = document.getElementById("sustainabilitytable");
             if (susttable) {
                 susttable.innerHTML = `
-                    <tr class="border-b border-slate-800/40">
-                        <td class="py-1.5 text-yellow-400">SR-01</td>
-                        <td>ប្រភពទឹកស្អាតមហានគរតំបន់ A</td>
-                        <td class="text-right text-emerald-400">96% Optimal</td>
-                    </tr>
-                    <tr class="border-b border-slate-800/40">
-                        <td class="py-1.5 text-yellow-400">SR-02</td>
-                        <td>ថាមពល Solar Buffers សរុប</td>
-                        <td class="text-right text-emerald-400">94% Active</td>
-                    </tr>`;
+                    <tr class="border-b border-slate-800/40"><td class="py-1.5 text-yellow-400">SR-01</td><td>ប្រភពទឹកស្អាតមហានគរតំបន់ A</td><td class="text-right text-emerald-400">96% Optimal</td></tr>
+                    <tr class="border-b border-slate-800/40"><td class="py-1.5 text-yellow-400">SR-02</td><td>ថាមពល Solar Buffers សរុប</td><td class="text-right text-emerald-400">94% Active</td></tr>`;
             }
             const sectable = document.getElementById("securitytable");
             if (sectable) {
                 sectable.innerHTML = `
-                    <tr class="border-b border-slate-800/40">
-                        <td class="py-1.5 text-red-400">SS-01</td>
-                        <td>ច្រកទ្វារព្រំដែន ប៉ោយប៉ែត</td>
-                        <td class="text-right text-emerald-400">Secure Shield</td>
-                    </tr>
-                    <tr class="border-b border-slate-800/40">
-                        <td class="py-1.5 text-red-400">SS-02</td>
-                        <td>ប្រព័ន្ធការពារបន្ទប់យុទ្ធសាស្ត្រមេ</td>
-                        <td class="text-right text-teal-400">45 Layers Active</td>
-                    </tr>`;
+                    <tr class="border-b border-slate-800/40"><td class="py-1.5 text-red-400">SS-01</td><td>ច្រកទ្វារព្រំដែន ប៉ោយប៉ែត</td><td class="text-right text-emerald-400">Secure Shield</td></tr>
+                    <tr class="border-b border-slate-800/40"><td class="py-1.5 text-red-400">SS-02</td><td>ប្រព័ន្ធការពារបន្ទប់យុទ្ធសាស្ត្រមេ</td><td class="text-right text-teal-400">45 Layers Active</td></tr>`;
             }
             const hoteltable = document.getElementById("hoteltable");
             if (hoteltable) {
                 hoteltable.innerHTML = `
-                    <tr class="border-b border-slate-800/40">
-                        <td class="py-1.5 text-teal-400">EH-369</td>
-                        <td>បន្ទប់ VIP Suite 01</td>
-                        <td class="text-right text-emerald-400">កំពុងស្នាក់នៅ</td>
-                    </tr>
-                    <tr class="border-b border-slate-800/40">
-                        <td class="py-1.5 text-teal-400">EH-370</td>
-                        <td>បន្ទប់ Standard 05</td>
-                        <td class="text-right text-yellow-400">ទំនេរ</td>
-                    </tr>`;
+                    <tr class="border-b border-slate-800/40"><td class="py-1.5 text-teal-400">EH-369</td><td>បន្ទប់ VIP Suite 01</td><td class="text-right text-emerald-400">កំពុងស្នាក់នៅ</td></tr>
+                    <tr class="border-b border-slate-800/40"><td class="py-1.5 text-teal-400">EH-370</td><td>បន្ទប់ Standard 05</td><td class="text-right text-yellow-400">ទំនេរ</td></tr>`;
             }
         };
 
@@ -691,206 +646,115 @@
 
         window.customtrigger = async function(action) {
             if (action === "unlock_system") {
-                const keyinput = document.getElementById("masterkey");
-                const errormsg = document.getElementById("lockerrormsg");
-                const keyval = keyinput.value;
+                const keyval = document.getElementById("masterkey").value;
                 const iscorrect = (keyval === "369" || keyval === "905" || keyval === "906.106.905" || keyval === "906106905");
                 
                 if (iscorrect) {
                     systemstate.unlocked = true;
-                    const lsscreen = document.getElementById("lockscreen");
-                    lsscreen.style.display = "none";
-                    errormsg.style.display = "none";
-                    logger.write("🔓 [system auth]: ពិធីការបើកសោប្រព័ន្ធជោគជ័យ! ប្រព័ន្ធអាណាចក្រ AI 369 និងប្រព័ន្ធការពារ ៤៥ ស្រទាប់ ដំណើរការពេញលេញ!", "gold");
+                    document.getElementById("lockscreen").style.display = "none";
+                    document.getElementById("lockerrormsg").style.display = "none";
+                    logger.write("🔓 [system auth]: ពិធីការបើកសោប្រព័ន្ធជោគជ័យ! ប្រព័ន្ធអាណាចក្រ AI 369 ដំណើរការពេញលេញ!", "gold");
                     updatetablespulse();
-                    if (map) {
-                        setTimeout(() => { map.invalidateSize(); }, 200);
-                    }
+                    if (map) setTimeout(() => map.invalidateSize(), 200);
                 } else {
-                    errormsg.style.display = "block";
+                    document.getElementById("lockerrormsg").style.display = "block";
                 }
             } 
             else if (action === "lock_system") {
                 systemstate.unlocked = false;
-                const lsscreen = document.getElementById("lockscreen");
-                lsscreen.style.display = "flex";
-                const keyinput = document.getElementById("masterkey");
-                keyinput.value = "";
+                document.getElementById("lockscreen").style.display = "flex";
+                document.getElementById("masterkey").value = "";
                 logger.write("🔒 [system lock]: ប្រព័ន្ធត្រូវបានចាក់សោសុវត្ថិភាពឡើងវិញ។");
             }
             else if (action === "cool_temp_up") {
                 if (systemstate.actemp < 30) {
                     systemstate.actemp += 0.5;
-                    const temptext = document.getElementById("cputemp");
-                    temptext.innerHTML = `${systemstate.actemp.toFixed(1)}°c`;
-                    logger.write(`❄️ [climate]: បានកំណត់សីតុណ្ហភាពឡើងទៅ: ${systemstate.actemp.toFixed(1)}°c`, "#06b6d4");
+                    document.getElementById("cputemp").innerHTML = `${systemstate.actemp.toFixed(1)}°C`;
+                    logger.write(`❄️ [climate]: បានកំណត់សីតុណ្ហភាពឡើងទៅ: ${systemstate.actemp.toFixed(1)}°C`, "#06b6d4");
                 }
             } else if (action === "cool_temp_down") {
                 if (systemstate.actemp > 10) {
                     systemstate.actemp -= 0.5;
-                    const temptext = document.getElementById("cputemp");
-                    temptext.innerHTML = `${systemstate.actemp.toFixed(1)}°c`;
-                    logger.write(`❄️ [climate]: បានបន្ថយសីតុណ្ហភាពចុះមកនៅ: ${systemstate.actemp.toFixed(1)}°c`, "#06b6d4");
+                    document.getElementById("cputemp").innerHTML = `${systemstate.actemp.toFixed(1)}°C`;
+                    logger.write(`❄️ [climate]: បានបន្ថយសីតុណ្ហភាពចុះមកនៅ: ${systemstate.actemp.toFixed(1)}°C`, "#06b6d4");
                 }
             }
             else if (action.startsWith("sigil_")) {
                 const montext = document.getElementById("monitortext");
-                if (action === "sigil_eye_1") {
-                    montext.innerHTML = "[sigil]: ចក្ខុទិព្វស្កេនដែនដីទី១ - Divine Eye Alpha active";
-                    logger.write("👁️ [sigil]: បានបញ្ចេញអំណាចមហាភ្នែកទី១ ស្កេនជោគជ័យ។", "#14b8a6");
-                } else if (action === "sigil_eye_2") {
-                    montext.innerHTML = "[sigil]: ចក្ខុទិព្វឆ្លុះផ្ទៃមេឃទី២ - Divine Eye Beta active";
-                    logger.write("👁️ [sigil]: បានបញ្ចេញអំណាចមហាភ្នែកទី២ ឆ្លុះទិសដៅមេឃជោគជ័យ។", "#14b8a6");
-                } else if (action === "sigil_eye_3") {
-                    montext.innerHTML = "[sigil]: ចក្ខុទិព្វទម្លុះមហាសមុទ្រទី៣ - Divine Eye Gamma active";
-                    logger.write("👁️ [sigil]: បានបញ្ចេញអំណាចមហាភ្នែកទី៣ ស្កេនបាតសមុទ្រជោគជ័យ。", "#14b8a6");
-                } else if (action === "sigil_core") {
-                    montext.innerHTML = "[sigil]: កាំរស្មីថាមពលព្រះអាទិត្យ - Almighty Core active";
-                    logger.write("☀️ [sigil]: មហាចក្រថាមពលព្រះអាទិត្យត្រូវបានបើកដំណើរការ ១០០%。", "#eab308");
-                } else if (action === "sigil_code") {
-                    montext.innerHTML = "[sigil]: បណ្តាញខ្យល់ព្យុះទិន្នន័យ - Supreme Code running";
-                    logger.write("🌀 [sigil]: ស្តេចកូដស្វ័យបញ្ជូនទិន្នន័យគ្មានកំហុស។", "#a855f7");
-                } else if (action === "sigil_main") {
-                    montext.innerHTML = "[sigil]: ម៉ាស៊ីនបម្រើការកណ្តាល - Main Core connected";
-                    logger.write("🌐 [sigil]: ភ្ជាប់ទំនាក់ទំនងជាមួយប្រព័ន្ធមេជោគជ័យ។");
-                } else if (action === "sigil_destiny") {
-                    montext.innerHTML = "[sigil]: ពិធីការកែប្រែខ្សែព្រលឹង - Destiny Node engaged";
-                    logger.write("☸️ [sigil]: កែប្រែខ្សែវាសនាប្រព័ន្ធមហានគរបានសម្រេចជោគជ័យ。", "#eab308");
-                }
+                if (action === "sigil_eye_1") { montext.innerHTML = "[sigil]: ចក្ខុទិព្វស្កេនដែនដីទី១"; logger.write("👁️ [sigil]: បញ្ចេញអំណាចមហាភ្នែកទី១ ជោគជ័យ។", "#14b8a6"); }
+                else if (action === "sigil_eye_2") { montext.innerHTML = "[sigil]: ចក្ខុទិព្វឆ្លុះផ្ទៃមេឃទី២"; logger.write("👁️ [sigil]: បញ្ចេញអំណាចមហាភ្នែកទី២ ជោគជ័យ។", "#14b8a6"); }
+                else if (action === "sigil_eye_3") { montext.innerHTML = "[sigil]: ចក្ខុទិព្វទម្លុះមហាសមុទ្រទី៣"; logger.write("👁️ [sigil]: បញ្ចេញអំណាចមហាភ្នែកទី៣ ជោគជ័យ។", "#14b8a6"); }
+                else if (action === "sigil_core") { montext.innerHTML = "[sigil]: កាំរស្មីថាមពលព្រះអាទិត្យ"; logger.write("☀️ [sigil]: មហាចក្រថាមពលព្រះអាទិត្យបើកដំណើរការ ១០០%。", "#eab308"); }
+                else if (action === "sigil_code") { montext.innerHTML = "[sigil]: បណ្តាញខ្យល់ព្យុះទិន្នន័យ"; logger.write("🌀 [sigil]: ស្តេចកូដបញ្ជូនទិន្នន័យគ្មានកំហុស។", "#a855f7"); }
+                else if (action === "sigil_main") { montext.innerHTML = "[sigil]: ម៉ាស៊ីនបម្រើការកណ្តាល"; logger.write("🌐 [sigil]: ភ្ជាប់ទំនាក់ទំនងប្រព័ន្ធមេជោគជ័យ។"); }
+                else if (action === "sigil_destiny") { montext.innerHTML = "[sigil]: កែប្រែខ្សែព្រលឹងវាសនា"; logger.write("☸️ [sigil]: កែប្រែខ្សែវាសនាមហានគរបានសម្រេច។", "#eab308"); }
             }
             else if (action.startsWith("cctv_")) {
                 const cctvid = document.getElementById("cctvid");
                 const cctvstatus = document.getElementById("cctvstatus");
                 const cctvloc = document.getElementById("cctvloctext");
-                if (action === "cctv_pp") {
-                    cctvid.innerHTML = "cam-01 [hq]";
-                    cctvstatus.innerHTML = "status: secured (100%)";
-                    cctvloc.innerHTML = "<span class='animate-pulse mr-2'>🟢</span> phnom penh (hq)";
-                    logger.write("🎥 [cctv]: បានប្តូរទៅកាន់ប៉ុស្តិ៍ទីស្នាក់ការកណ្តាល ភ្នំពេញ (hq)", "#06b6d4");
-                } else if (action === "cctv_pp_border") {
-                    cctvid.innerHTML = "cam-02 [border]";
-                    cctvstatus.innerHTML = "status: boundary monitoring";
-                    cctvloc.innerHTML = "<span class='animate-pulse mr-2'>🟡</span> poipet border area";
-                    logger.write("🎥 [cctv]: បានប្តូរទៅកាន់ប៉ុស្តិ៍តាមដានសន្តិសុខព្រំដែន ប៉ោយប៉ែត", "#06b6d4");
-                } else if (action === "cctv_pv") {
-                    cctvid.innerHTML = "cam-03 [hub]";
-                    cctvstatus.innerHTML = "status: logistics flow active";
-                    cctvloc.innerHTML = "<span class='animate-pulse mr-2'>🟢</span> prey veng distribution";
-                    logger.write("🎥 [cctv]: បានប្តូរទៅកាន់ប៉ុស្តិ៍តាមដានឃ្លាំងទិន្នន័យ ព្រៃវែង", "#06b6d4");
-                } else if (action === "cctv_coastal") {
-                    cctvid.innerHTML = "cam-04 [coastal]";
-                    cctvstatus.innerHTML = "status: marine sensor stream";
-                    cctvloc.innerHTML = "<span class='animate-pulse mr-2'>🔵</span> sihanoukville ocean line";
-                    logger.write("🎥 [cctv]: បានប្តូរទៅកាន់ប៉ុស្តិ៍តាមដានផ្ទៃសមុទ្រ និងកំពង់ផែ", "#06b6d4");
-                }
+                if (action === "cctv_pp") { cctvid.innerHTML = "cam-01 [hq]"; cctvstatus.innerHTML = "status: secured (100%)"; cctvloc.innerHTML = "<span class='animate-pulse mr-2'>🟢</span> Phnom Penh (HQ)"; }
+                else if (action === "cctv_pp_border") { cctvid.innerHTML = "cam-02 [border]"; cctvstatus.innerHTML = "status: boundary monitoring"; cctvloc.innerHTML = "<span class='animate-pulse mr-2'>🟡</span> Poipet Border Area"; }
+                else if (action === "cctv_pv") { cctvid.innerHTML = "cam-03 [hub]"; cctvstatus.innerHTML = "status: logistics flow active"; cctvloc.innerHTML = "<span class='animate-pulse mr-2'>🟢</span> Prey Veng Distribution"; }
+                else if (action === "cctv_coastal") { cctvid.innerHTML = "cam-04 [coastal]"; cctvstatus.innerHTML = "status: marine sensor stream"; cctvloc.innerHTML = "<span class='animate-pulse mr-2'>🔵</span> Sihanoukville Ocean Line"; }
+                logger.write(`🎥 [cctv]: បានប្តូរទស្សនីយភាពកាមេរ៉ាទៅកាន់ ${action}`, "#06b6d4");
             }
             else if (action === "scan_ocean") {
-                logger.write("🌊 [marine]: ចាប់ផ្តើមស្កេនទិន្នន័យ និងសីតុណ្ហភាពផ្ទៃសមុទ្រ...", "#0284c7");
-                if (map) {
-                    map.setView([10.5, 103.5], 9);
-                    drawradarroute({ lat: 10.6256, lng: 103.5234 }, "រ៉ាដាសមុទ្រកំពង់សោម");
-                    logger.write("✅ [marine]: ស្កេនផ្ទៃសមុទ្ររួចរាល់ គ្មានរូបភាពព្រមាន។", "#10b981");
-                }
+                logger.write("🌊 [marine]: ស្កេនសីតុណ្ហភាព និងផ្ទៃសមុទ្រ...", "#0284c7");
+                if (map) { map.setView([10.5, 103.5], 9); drawradarroute({ lat: 10.6256, lng: 103.5234 }, "រ៉ាដាសមុទ្រកំពង់សោម"); }
             } else if (action === "scan_border") {
-                logger.write("🛡️ [security]: កំពុងស្កេនរន្ធស្រមោល និងខ្សែការពារព្រំដែន...", "#f43f5e");
-                if (map) {
-                    map.setView([13.658, 102.563], 10);
-                    drawradarroute({ lat: 13.658, lng: 102.563 }, "រ៉ាដាការពារព្រំដែន");
-                    logger.write("✅ [security]: ស្កេនរួចរាល់ ខ្សែព្រំដែនស្ថិតក្នុងសុវត្ថិភាព។", "#10b981");
-                }
+                logger.write("🛡️ [security]: ស្កេនរន្ធស្រមោល និងខ្សែការពារព្រំដែន...", "#f43f5e");
+                if (map) { map.setView([13.658, 102.563], 10); drawradarroute({ lat: 13.658, lng: 102.563 }, "រ៉ាដាការពារព្រំដែន"); }
             } else if (action === "market_route") {
-                logger.write("🏁 [intelligence]: កំពុងទាញទិន្នន័យគន្លងផ្លូវផ្សារថ្មី...", "#eab308");
-                if (map) {
-                    map.setView([11.5690, 104.9215], 15);
-                    drawradarroute({ lat: 11.5690, lng: 104.9215 }, "គន្លងផ្លូវផ្សារថ្មី");
-                    logger.write("🏁 [intelligence]: បានគូរគន្លងផ្លូវផ្សារថ្មីជោគជ័យ!", "#10b981");
-                }
+                logger.write("🏁 [intelligence]: ទាញទិន្នន័យគន្លងផ្លូវផ្សារថ្មី...", "#eab308");
+                if (map) { map.setView([11.5690, 104.9215], 15); drawradarroute({ lat: 11.5690, lng: 104.9215 }, "គន្លងផ្លូវផ្សារថ្មី"); }
             }
             else if (action === "scan_weather_level_1") {
-                logger.write("📡 [weather]: កំពុងស្កេនរ៉ាដាអាកាសធាតុកម្រិត ១...", "#ff3366");
-                if (map) {
-                    map.setView([12.5, 105.0], 7);
-                    drawradarroute({ lat: 11.5564, lng: 104.9282 }, "រ៉ាដាអាកាសធាតុភ្នំពេញ");
-                    drawradarroute({ lat: 13.3633, lng: 103.8564 }, "រ៉ាដាអាកាសធាតុសៀមរាប");
-                    logger.write("✅ [weather]: ស្កេនជោគជ័យ! បណ្ដាញអាកាសធាតុទូទាំងប្រទេសមានសុវត្ថិភាព។", "#10b981");
-                }
+                logger.write("📡 [weather]: ស្កេនរ៉ាដាអាកាសធាតុកម្រិត ១...", "#ff3366");
+                if (map) { map.setView([12.5, 105.0], 7); drawradarroute({ lat: 11.5564, lng: 104.9282 }, "រ៉ាដាភ្នំពេញ"); }
             } else if (action === "scan_weather_level_2") {
-                logger.write("🌀 [weather]: កំពុងស្កេនរ៉ាដាអាកាសធាតុកម្រិត ២...", "#bc13fe");
-                if (map) {
-                    map.setView([10.5, 103.5], 9);
-                    drawradarroute({ lat: 10.6256, lng: 103.5234 }, "រ៉ាដាកំពង់សោម");
-                    logger.write("✅ [weather]: ស្កេនជោគជ័យ! លំហសមុទ្រគ្មានខ្យល់ព្យុះគំរាមកំហែង។", "#10b981");
-                }
+                logger.write("🌀 [weather]: ស្កេនរ៉ាដាអាកាសធាតុកម្រិត ២...", "#bc13fe");
+                if (map) { map.setView([10.5, 103.5], 9); drawradarroute({ lat: 10.6256, lng: 103.5234 }, "រ៉ាដាកំពង់សោម"); }
             }
-            else if (action === "safe_config") {
-                logger.write("⚙️ [config]: កំពុងផ្ទុកទិន្នន័យ config.js... app_name: 'mahanokor 369' | version: '9.0'", "#10b981");
-            } else if (action === "safe_logs") {
-                logger.write("📊 [logs]: កំពុងត្រួតពិនិត្យកំណត់ហេតុប្រព័ន្ធទាំងអស់... សន្តិសុខ: ok | កាមេរ៉ា: ok");
-            } else if (action === "status_check") {
-                logger.write("⚡ [ping]: កំពុងត្រួតពិនិត្យល្បឿនបណ្តាញ... ping: 12ms | jitter: 1.2ms | status: online", "#10b981");
-            } else if (action === "backup_now") {
+            else if (action === "safe_config") { logger.write("⚙️ [config]: ផ្ទុកទិន្នន័យ config.js ជោគជ័យ។", "#10b981"); }
+            else if (action === "safe_logs") { logger.write("📊 [logs]: ត្រួតពិនិត្យកំណត់ហេតុប្រព័ន្ធទាំងអស់រួចរាល់។"); }
+            else if (action === "status_check") { logger.write("⚡ [ping]: ពិនិត្យល្បឿនបណ្តាញ ping: 12ms | status: online", "#10b981"); }
+            else if (action === "backup_now") {
                 logger.write("💾 [backup]: ចាប់ផ្តើមរក្សាទុក snapshots...", "#eab308");
-                setTimeout(() => { logger.write("💾 [backup]: បានចម្លង និងរក្សាទុកទិន្នន័យបម្រុងដោយជោគជ័យ ១០០%!", "#10b981"); }, 600);
+                setTimeout(() => logger.write("💾 [backup]: រក្សាទុកទិន្នន័យបម្រុង ១០០%!", "#10b981"), 600);
             }
             else if (action === "simulate_fault") {
-                systemstate.healthlevels.agri = 30;
-                systemstate.healthlevels.health = 45;
-                logger.write("⚠️ [warning]: រកឃើញការខូចខាតប្រព័ន្ធរង! botany: 30% | healthcare: 45%", "#ef4444");
+                systemstate.healthlevels.agri = 30; systemstate.healthlevels.health = 45;
+                logger.write("⚠️ [warning]: រកឃើញការខូចខាតប្រព័ន្ធរង!", "#ef4444");
                 updatehealthui();
             } else if (action === "auto_heal") {
-                logger.write("♻️ [auto-heal]: កំពុងចាប់ផ្តើមចាក់បញ្ចូល dynamic repair scripts...", "#06b6d4");
+                logger.write("♻️ [auto-heal]: កំពុងជួសជុលប្រព័ន្ធស្វ័យប្រវត្តិ...", "#06b6d4");
                 setTimeout(() => {
-                    systemstate.healthlevels.agri = 100;
-                    systemstate.healthlevels.health = 100;
+                    systemstate.healthlevels.agri = 100; systemstate.healthlevels.health = 100;
                     updatehealthui();
-                    logger.write("✅ [auto-heal]: ប្រព័ន្ធរងទាំងអស់ត្រូវបានជួសជុល និងស្តារឡើងវិញដល់ ១០០% ជោគជ័យ!", "#10b981");
+                    logger.write("✅ [auto-heal]: ប្រព័ន្ធរងត្រូវបានស្តារឡើងវិញ ១០០%!", "#10b981");
                 }, 800);
-            } else if (action === "clear_logs") {
-                logger.clear();
-            }
-            else if (action === "scan_net") { logger.write("🌐 [scanner]: កំពុងស្កេនប្រព័ន្ធ Network ជុំវិញ៖ សុវត្ថិភាព [OK]", "#26ff26"); }
-            else if (action === "scan_cable") { logger.write("🔌 [scanner]: ស្កេនចរន្តពន្លឺ Fiber Optic៖ ល្បឿនពេញលេញ", "#26ff26"); }
-            else if (action === "scan_wireless") { logger.write("⚡ [scanner]: ស្កេនរលកសញ្ញាឥតខ្សែ Bluetooth & WiFi៖ គ្មានការលួចស្តាប់", "#26ff26"); }
-            else if (action === "scan_power") { logger.write("💡 [scanner]: ស្កេននិងគ្រប់គ្រងប្រព័ន្ធចរន្តអគ្គិសនី Power Grid៖ ស្ថិរភាព", "#26ff26"); }
-            else if (action === "scan_aerospace") { logger.write("🌌 [scanner]: ស្កេននិងបិទច្រកលំហអាកាស Aerospace Frequency៖ ធម្មតា", "#26ff26"); }
-            else if (action === "scan_dark") { logger.write("👁️‍尋 [scanner]: ស្កេនរកឃើញក្រុមភ្លើងងងឹត (ពួកលួចលុយ)៖ ត្រូវបានកម្ទេចចោល!", "#ff3333"); }
-            else if (action === "quantum_admin") { logger.write("🔐 [admin auth]: ផ្ទៀងផ្ចាត់គណនីគ្រប់គ្រងជាន់ខ្ពស់...", "gold"); }
-            else if (action === "quantum_voice") { logger.write("🎙️ [voice]: ម៉ាស៊ីនចាប់សំឡេងកំពុងរង់ចាំ...", "#00bfff"); }
-            else if (action === "quantum_init") { logger.write("⚙️ [quantum]: initialize core activated", "#ff00ff"); }
-            else if (action === "quantum_shield") { logger.write("🛡️ [quantum]: quantum energize shield active", "#ff00ff"); }
+            } else if (action === "clear_logs") { logger.clear(); }
+            else if (action.startsWith("scan_")) { logger.write(`🛡️ [scanner]: ដំណើរការ ${action} រួចរាល់ដោយសុវត្ថិភាព។`, "#26ff26"); }
+            else if (action.startsWith("quantum_")) { logger.write(`⚙️ [quantum]: ដំណើរការបញ្ជាម៉ាទ្រីស ${action} ជោគជ័យ។`, "#ff00ff"); }
             else if (action === "fetch_room_two") {
-                const roomcontent = document.getElementById("roomtwocontent");
-                roomcontent.innerHTML = "<span class='text-yellow-400'>📂 core_369.dat | shield_v2.conf | revenue_401.log</span>";
+                document.getElementById("roomtwocontent").innerHTML = "<span class='text-yellow-400'>📂 core_369.dat | shield_v2.conf | revenue_401.log</span>";
                 logger.write("🏛️ [workstation]: បានបើកឯកសារបន្ទប់ទី ២ រួចរាល់។", "gold");
             }
-            
-            // បានបិទមុខងារ Fetch ទៅ backend ជាបណ្តោះអាសន្នសិន ដើម្បីកុំឱ្យវាលោត Error Console
-            // fetch('/api/execute', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ module_id: action, key: "369" })
-            // }).catch(e => console.log("running in local ui mode"));
         };
 
         window.addEventListener("load", () => {
             setInterval(() => {
+                const now = new Date();
                 const clockel = document.getElementById("clock");
-                if (clockel) {
-                    const now = new Date();
-                    clockel.innerText = "CELESTIAL TIME: " + now.toLocaleString();
-                }
+                if (clockel) clockel.innerText = "CELESTIAL TIME: " + now.toLocaleString();
                 const cctvtimer = document.getElementById("cctvtimer");
-                if (cctvtimer) {
-                    const now = new Date();
-                    cctvtimer.innerText = now.toLocaleTimeString();
-                }
+                if (cctvtimer) cctvtimer.innerText = now.toLocaleTimeString();
             }, 1000);
 
             setInterval(() => {
                 const tempel = document.getElementById("cputemp");
-                if (tempel) {
-                    tempel.innerText = (12 + Math.random() * 3).toFixed(1) + "°c";
-                }
+                if (tempel) tempel.innerText = (12 + Math.random() * 3).toFixed(1) + "°C";
             }, 4000);
 
             initmahanokormap();
@@ -905,7 +769,7 @@
                 new Chart(chartel, {
                     type: "line",
                     data: {
-                        labels: ["jan", "feb", "mar", "apr", "may", "jun"],
+                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
                         datasets: [{
                             label: "ប្រព័ន្ធចំណូលរួម",
                             data: [15, 25, 12, 19, 32, 45],
@@ -931,18 +795,6 @@
             logger.write("👑 [core]: ផ្ទាំងបញ្ជាមហានគរ ៣៦៩ ដំណើរការជោគជ័យ ១០០% (សូមវាយកូដសម្ងាត់មេដើម្បីដោះសោ!)");
         });
     </script>
-
-    <!-- ⚠️ បងបានបិទ (Comment) ឯកសារខាងក្រោមនេះសិន ព្រោះយើងអត់មាន File ទាំងនេះទេ វាធ្វើឱ្យ Error ពេល Run ជា HTML ធម្មតា -->
-    <!--
-    <script src="static/js/auth_engine.js"></script>
-    <script src="static/js/dashboard.js"></script>
-    <script src="static/js/config.js"></script>
-    <script src="static/js/api.js"></script>
-    <script src="/static/js/main_engine.js"></script>
-    <script src="{{ url_for('static', filename='js/admin369.js') }}"></script>
-    <script src="{{ url_for('serve_core_js', filename='mahanokor_core.js') }}"></script>
-    <script src="static/js/app.js"></script>
-    -->
 
 </body>
 </html>
