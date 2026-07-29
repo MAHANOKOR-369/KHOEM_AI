@@ -27,8 +27,8 @@ const AuthEngine = {
         
         // ចាប់ផ្តើមមុខងារផ្សេងៗបន្ទាប់ពី Login ចូល
         DashboardUI.initCharts();
+        DashboardUI.renderTable();
     },
-
     lockSystem: function() {
         this.isAuthenticated = false;
         document.getElementById("lockscreen").style.display = "flex";
