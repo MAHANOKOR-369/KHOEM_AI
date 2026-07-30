@@ -1,0 +1,15 @@
+#include "engine.hpp"
+
+int main(int argc, char* argv[]) {
+    MahanokorEngine core;
+    
+    if (argc > 1) {
+        string input = argv[1];
+        string result = core.processData(input);
+        cout << result << endl;
+    } else {
+        cout << core.processData("Default Execution") << endl;
+    }
+    
+    return 0;
+}
