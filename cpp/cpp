@@ -1,0 +1,15 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main(int argc, char* argv[]) {
+    if (argc > 1) {
+        string input = argv[1];
+        // ឧទាហរណ៍៖ ធ្វើការ Process ទិន្នន័យដែលផ្ញើមកពី Python
+        cout << "[C++ Engine] ទទួលបានទិន្នន័យ៖ " << input << " — ប្រសិទ្ធភាពខ្ពស់!" << endl;
+    } else {
+        cout << "[C++ Engine] ដំណើរការធម្មតាដោយជោគជ័យ!" << endl;
+    }
+    return 0;
+}
