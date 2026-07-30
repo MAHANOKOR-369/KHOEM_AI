@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ==============================================================================
-# app.py — KHOEM_AI backend (Groq API version — ឥតគិតថ្លៃ)
+# app.py — KHOEM_AI 2.0 backend
+# Chat + GPS Directions + Vision (Photo Analysis)
 # ==============================================================================
 
 import os
@@ -16,12 +17,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-
-# ------------------------------------------------------------------------------
-# Groq API configuration — ចុះឈ្មោះឥតគិតថ្លៃនៅ console.groq.com
-# ------------------------------------------------------------------------------
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-GROQ_MODEL = "llama-3.3-70b-versatile"  # model ឥតគិតថ្លៃដ៏ខ្លាំងបំផុតរបស់ Groq
+GROQ_MODEL = "llama-3.3-70b-versatile"
+GROQ_VISION_MODEL = "llama-3.2-90b-vision-preview"
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 DB_PATH = os.path.join(base_dir, "database", "khoem_ai.db")
@@ -80,22 +78,17 @@ def get_history(session_id, limit=20):
 init_db()
 
 # ------------------------------------------------------------------------------
-# Groq API — ប្រើទម្រង់ស្រដៀង OpenAI (chat completions)
+# Groq — Chat
 # ------------------------------------------------------------------------------
 def call_groq(messages, system_prompt=""):
-    """
-    ហៅ Groq API (ឥតគិតថ្លៃ) ជំនួស Claude API
-    Groq ប្រើទម្រង់ស្រដៀង OpenAI: messages array ជាមួយ role "system"/"user"/"assistant"
-    """
     if not GROQ_API_KEY:
-        return False, "សូមកំណត់ GROQ_API_KEY ក្នុងឯកសារ .env សិន"
+        return False, "sorm kamnot GROQ_API_KEY knong ekasar .env sen"
 
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {GROQ_API_KEY}"
     }
 
-    # Groq ដាក់ system prompt ជា message ដំបូងក្នុង array (មិនដាច់ដោយឡែកដូច Claude)
     full_messages = []
     if system_prompt:
         full_messages.append({"role": "system", "content": system_prompt})
@@ -112,17 +105,48 @@ def call_groq(messages, system_prompt=""):
         response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=30)
         response.raise_for_status()
         data = response.json()
-        reply_text = data["choices"][0]["message"]["content"]
-        return True, reply_text
+        return True, data["choices"][0]["message"]["content"]
     except requests.exceptions.RequestException as e:
         logging.error(f"Groq API error: {e}")
-        # បង្ហាញ error message លម្អិតជាងដើម្បីជួយ debug (ឧ. key ខុស, rate limit)
-        error_detail = ""
-        try:
-            error_detail = response.json().get("error", {}).get("message", "")
-        except Exception:
-            pass
-        return False, f"មានបញ្ហាក្នុងការភ្ជាប់ទៅ Groq API: {str(e)} {error_detail}"
+        return False, f"panha phcheab tow Groq API: {str(e)}"
+
+# ------------------------------------------------------------------------------
+# Groq — Vision (Photo Analysis)
+# ------------------------------------------------------------------------------
+def call_groq_vision(image_base64, question, mime_type="image/jpeg"):
+    if not GROQ_API_KEY:
+        return False, "sorm kamnot GROQ_API_KEY moun sen"
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {GROQ_API_KEY}"
+    }
+
+    payload = {
+        "model": GROQ_VISION_MODEL,
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": question},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:{mime_type};base64,{image_base64}"}
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 1024
+    }
+
+    try:
+        response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=60)
+        response.raise_for_status()
+        data = response.json()
+        return True, data["choices"][0]["message"]["content"]
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Groq Vision API error: {e}")
+        return False, f"panha vipheak roub pheap: {str(e)}"
 
 # ------------------------------------------------------------------------------
 # Routes — Pages
@@ -136,7 +160,7 @@ def index():
 # ------------------------------------------------------------------------------
 @app.route('/api/status', methods=['GET'])
 def get_status():
-    return jsonify({"status": "online", "system": "khoem_ai", "version": "1.0-groq"})
+    return jsonify({"status": "online", "system": "khoem_ai", "version": "2.0-groq"})
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -145,11 +169,11 @@ def chat():
     user_message = data.get("message", "").strip()
     system_prompt = data.get(
         "system_prompt",
-        "អ្នកជាជំនួយការឆ្លាតវៃឈ្មោះ KHOEM_AI ។ ឆ្លើយខ្លីៗច្បាស់លាស់ជាភាសាខ្មែរ។"
+        "anak ja chomnuoyka chlatvei chhmuoh KHOEM_AI. chhlaey khley khley chbas chbas ja pheasa khmer."
     )
 
     if not session_id or not user_message:
-        return jsonify({"error": "session_id និង message ត្រូវការទាំងពីរ"}), 400
+        return jsonify({"error": "session_id ning message trauvkar teang pi"}), 400
 
     save_message(session_id, "user", user_message)
     history = get_history(session_id)
@@ -167,6 +191,41 @@ def chat():
 def history(session_id):
     return jsonify({"session_id": session_id, "messages": get_history(session_id, limit=100)})
 
+@app.route('/api/directions', methods=['POST'])
+def directions():
+    data = request.get_json(silent=True) or {}
+    origin = data.get("origin")
+    destination = data.get("destination")
+
+    if not origin or not destination:
+        return jsonify({"error": "trauvkar teang origin ning destination"}), 400
+
+    return jsonify({
+        "instruction": f"komporng svengrok plov tow {destination}. (feature kompong aphivotdn)",
+        "origin": origin,
+        "destination": destination
+    })
+
+@app.route('/api/vision', methods=['POST'])
+def vision():
+    """
+    👁️ mueil — totuol roub pheap (base64) + samnuor -> trolop kar vipheak
+    """
+    data = request.get_json(silent=True) or {}
+    image_b64 = data.get("image", "")
+    question = data.get("question", "sorm piponnea roub pheap nis ja pheasa khmer")
+    mime_type = data.get("mime_type", "image/jpeg")
+
+    if not image_b64:
+        return jsonify({"error": "trauvkar image (base64)"}), 400
+
+    success, answer = call_groq_vision(image_b64, question, mime_type)
+
+    if success:
+        return jsonify({"answer": answer})
+    else:
+        return jsonify({"error": answer}), 502
+
 # ------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------
@@ -174,7 +233,7 @@ if __name__ == "__main__":
     port = int(os.getenv("SERVER_PORT", 5000))
     debug = os.getenv("DEBUG_MODE", "true").lower() == "true"
     print("=" * 50)
-    print("  KHOEM_AI backend — Groq API (ឥតគិតថ្លៃ)")
+    print("  KHOEM_AI 2.0 - Chat + Voice + GPS + Vision")
     print(f"  running on: http://0.0.0.0:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=debug)
