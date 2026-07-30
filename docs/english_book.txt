@@ -1,0 +1,30 @@
+# ==============================================================================
+# 📚 មុខងារអានសៀវភៅ / ឯកសារ
+# ==============================================================================
+@app.route('/api/read-book', methods=['POST'])
+def read_book():
+    data = request.get_json(silent=True) or {}
+    file_name = data.get("file_name", "") # ឈ្មោះ File ក្នុង folder docs
+    user_question = data.get("question", "សូមសង្ខេបសៀវភៅនេះជាភាសាខ្មែរ")
+
+    file_path = os.path.join(base_dir, "docs", file_name)
+    
+    if not os.path.exists(file_path):
+        return jsonify({"error": "រកមិនឃើញ File នេះទេ"}), 404
+
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            book_content = f.read(10000) # អានអត្ថបទ 10,000 តួអក្សរដំបូង
+
+        prompt = f"នេះជាខ្លឹមសារសៀវភៅ៖\n{book_content}\n\nសំណួរ៖ {user_question}"
+        
+        messages = [{"role": "user", "content": prompt}]
+        success, reply = call_groq(messages, "អ្នកជា AI អ្នកបកប្រែ និងសង្ខេបសៀវភៅគ្រប់ភាសាជាភាសាខ្មែរ។")
+
+        if success:
+            return jsonify({"answer": reply})
+        else:
+            return jsonify({"error": reply}), 502
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+        
