@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ==============================================================================
-# app.py — KHOEM_AI 1.0 backend
-# Chat (Claude API) + GPS Directions endpoint
-# Voice (ស្តាប់/និយាយ) ដំណើរការក្នុង browser ផ្ទាល់ (static/js/voice.js)
+# app.py — KHOEM_AI backend (Groq API version — ឥតគិតថ្លៃ)
 # ==============================================================================
 
 import os
@@ -18,9 +16,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-CLAUDE_MODEL = "claude-sonnet-4-6"
-CLAUDE_API_URL = "https://api.anthropic.com/v1/messages"
+
+# ------------------------------------------------------------------------------
+# Groq API configuration — ចុះឈ្មោះឥតគិតថ្លៃនៅ console.groq.com
+# ------------------------------------------------------------------------------
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_MODEL = "llama-3.3-70b-versatile"  # model ឥតគិតថ្លៃដ៏ខ្លាំងបំផុតរបស់ Groq
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 DB_PATH = os.path.join(base_dir, "database", "khoem_ai.db")
 os.makedirs(os.path.join(base_dir, "database"), exist_ok=True)
@@ -78,32 +80,49 @@ def get_history(session_id, limit=20):
 init_db()
 
 # ------------------------------------------------------------------------------
-# Claude API
+# Groq API — ប្រើទម្រង់ស្រដៀង OpenAI (chat completions)
 # ------------------------------------------------------------------------------
-def call_claude(messages, system_prompt=""):
-    if not ANTHROPIC_API_KEY:
-        return False, "សូមកំណត់ ANTHROPIC_API_KEY ក្នុងឯកសារ .env សិន"
+def call_groq(messages, system_prompt=""):
+    """
+    ហៅ Groq API (ឥតគិតថ្លៃ) ជំនួស Claude API
+    Groq ប្រើទម្រង់ស្រដៀង OpenAI: messages array ជាមួយ role "system"/"user"/"assistant"
+    """
+    if not GROQ_API_KEY:
+        return False, "សូមកំណត់ GROQ_API_KEY ក្នុងឯកសារ .env សិន"
 
     headers = {
         "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01"
+        "Authorization": f"Bearer {GROQ_API_KEY}"
     }
+
+    # Groq ដាក់ system prompt ជា message ដំបូងក្នុង array (មិនដាច់ដោយឡែកដូច Claude)
+    full_messages = []
+    if system_prompt:
+        full_messages.append({"role": "system", "content": system_prompt})
+    full_messages.extend(messages)
+
     payload = {
-        "model": CLAUDE_MODEL,
+        "model": GROQ_MODEL,
+        "messages": full_messages,
         "max_tokens": 1024,
-        "system": system_prompt,
-        "messages": messages
+        "temperature": 0.7
     }
+
     try:
-        response = requests.post(CLAUDE_API_URL, headers=headers, json=payload, timeout=30)
+        response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=30)
         response.raise_for_status()
         data = response.json()
-        text_blocks = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
-        return True, "\n".join(text_blocks)
+        reply_text = data["choices"][0]["message"]["content"]
+        return True, reply_text
     except requests.exceptions.RequestException as e:
-        logging.error(f"Claude API error: {e}")
-        return False, f"មានបញ្ហាក្នុងការភ្ជាប់ទៅ Claude API: {str(e)}"
+        logging.error(f"Groq API error: {e}")
+        # បង្ហាញ error message លម្អិតជាងដើម្បីជួយ debug (ឧ. key ខុស, rate limit)
+        error_detail = ""
+        try:
+            error_detail = response.json().get("error", {}).get("message", "")
+        except Exception:
+            pass
+        return False, f"មានបញ្ហាក្នុងការភ្ជាប់ទៅ Groq API: {str(e)} {error_detail}"
 
 # ------------------------------------------------------------------------------
 # Routes — Pages
@@ -117,21 +136,16 @@ def index():
 # ------------------------------------------------------------------------------
 @app.route('/api/status', methods=['GET'])
 def get_status():
-    return jsonify({"status": "online", "system": "khoem_ai", "version": "1.0"})
+    return jsonify({"status": "online", "system": "khoem_ai", "version": "1.0-groq"})
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    """
-    🧠 គិត និងវិភាគ — ចំណុចកណ្តាលនៃការសន្ទនាទាំងអស់
-    ទទួលទាំងអត្ថបទវាយធម្មតា និងអត្ថបទដែលបានមកពី voice recognition
-    """
     data = request.get_json(silent=True) or {}
     session_id = data.get("session_id")
     user_message = data.get("message", "").strip()
     system_prompt = data.get(
         "system_prompt",
-        "អ្នកជាជំនួយការឆ្លាតវៃឈ្មោះ KHOEM_AI ។ ឆ្លើយខ្លីៗច្បាស់លាស់ជាភាសាខ្មែរ "
-        "ព្រោះចម្លើយរបស់អ្នកនឹងត្រូវបានអានឮជាសំឡេងផងដែរ។"
+        "អ្នកជាជំនួយការឆ្លាតវៃឈ្មោះ KHOEM_AI ។ ឆ្លើយខ្លីៗច្បាស់លាស់ជាភាសាខ្មែរ។"
     )
 
     if not session_id or not user_message:
@@ -139,9 +153,9 @@ def chat():
 
     save_message(session_id, "user", user_message)
     history = get_history(session_id)
-    claude_messages = [{"role": h["role"], "content": h["content"]} for h in history]
+    groq_messages = [{"role": h["role"], "content": h["content"]} for h in history]
 
-    success, reply = call_claude(claude_messages, system_prompt)
+    success, reply = call_groq(groq_messages, system_prompt)
 
     if success:
         save_message(session_id, "assistant", reply)
@@ -153,30 +167,6 @@ def chat():
 def history(session_id):
     return jsonify({"session_id": session_id, "messages": get_history(session_id, limit=100)})
 
-@app.route('/api/directions', methods=['POST'])
-def directions():
-    """
-    🗺️ នាំផ្លូវ — ត្រូវការភ្ជាប់ routing API ពិត (Google Directions API,
-    OpenRouteService, ឬ Mapbox) ដើម្បីគណនាផ្លូវជាក់ស្តែង។
-
-    ឥឡូវនេះជា STUB (គំរូ) ត្រឡប់សារធម្មតា — ជំហានបន្ទាប់ (KHOEM_AI 1.1)
-    ត្រូវភ្ជាប់ជាមួយ routing API ពិត។
-    """
-    data = request.get_json(silent=True) or {}
-    origin = data.get("origin")
-    destination = data.get("destination")
-
-    if not origin or not destination:
-        return jsonify({"error": "ត្រូវការទាំង origin និង destination"}), 400
-
-    # TODO (KHOEM_AI 1.1): ភ្ជាប់ជាមួយ OpenRouteService ឬ Google Directions API
-    # ដើម្បីទទួលបានជំហាននាំផ្លូវពិត (turn-by-turn instructions)
-    return jsonify({
-        "instruction": f"កំពុងស្វែងរកផ្លូវទៅ {destination}។ (មុខងារនេះកំពុងអភិវឌ្ឍន៍)",
-        "origin": origin,
-        "destination": destination
-    })
-
 # ------------------------------------------------------------------------------
 # Main
 # ------------------------------------------------------------------------------
@@ -184,7 +174,7 @@ if __name__ == "__main__":
     port = int(os.getenv("SERVER_PORT", 5000))
     debug = os.getenv("DEBUG_MODE", "true").lower() == "true"
     print("=" * 50)
-    print("  KHOEM_AI 1.0 — Chat + Voice + GPS")
+    print("  KHOEM_AI backend — Groq API (ឥតគិតថ្លៃ)")
     print(f"  running on: http://0.0.0.0:{port}")
     print("=" * 50)
     app.run(host="0.0.0.0", port=port, debug=debug)
